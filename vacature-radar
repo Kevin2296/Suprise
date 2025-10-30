@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vacature Radar – HBO Zorg (Landgraaf +30km)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html,body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,"Apple Color Emoji","Segoe UI Emoji"}
+    .card{border-radius:1rem; box-shadow:0 8px 30px rgba(0,0,0,.07)}
+    .btn{border-radius:999px}
+    .grid-auto{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <header class="sticky top-0 z-20 bg-white/80 backdrop-blur border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-bold">VR</div>
+      <div>
+        <h1 class="text-xl sm:text-2xl font-semibold">Vacature Radar – HBO Zorg</h1>
+        <p class="text-sm text-slate-500">Landgraaf (30 km straal) · alle HBO-zorgfuncties</p>
+      </div>
+      <div class="ml-auto flex gap-2">
+        <button id="openAll" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 text-sm">Open alle zoeklinks</button>
+        <button id="exportTracker" class="btn bg-slate-800 hover:bg-black text-white px-4 py-2 text-sm">Exporteer tracker (CSV)</button>
+        <label class="btn bg-white border px-4 py-2 text-sm cursor-pointer">Importeer CSV
+          <input id="importCsv" type="file" accept=".csv" class="hidden" />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 grid gap-6">
+
+    <!-- Zoekprofiel -->
+    <section class="card bg-white p-5">
+      <div class="flex flex-col md:flex-row md:items-end gap-4">
+        <div class="grow">
+          <label class="text-xs uppercase tracking-wide text-slate-500">Zoektermen</label>
+          <input id="q" class="mt-1 w-full border rounded-xl px-3 py-2" value="HBO zorg OR verpleegkundige OR wijkverpleegkundige OR casemanager OR kwaliteitsmedewerker" />
+        </div>
+        <div>
+          <label class="text-xs uppercase tracking-wide text-slate-500">Locatie</label>
+          <input id="loc" class="mt-1 w-full border rounded-xl px-3 py-2" value="Landgraaf, Limburg" />
+        </div>
+        <div>
+          <label class="text-xs uppercase tracking-wide text-slate-500">Straal (km)</label>
+          <input id="radius" type="number" class="mt-1 w-28 border rounded-xl px-3 py-2" value="30" />
+        </div>
+        <div class="flex gap-2">
+          <button id="refresh" class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2">Genereer links</button>
+          <button id="saveProfile" class="btn bg-white border px-4 py-2">Profiel opslaan</button>
+          <!-- Zonder proxy toont dit geen inhoud, maar laat ik de knop staan voor later -->
+          <button id="aggregate" class="btn bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2">Zoek & verzamel</button>
+        </div>
+      </div>
+      <p class="mt-3 text-sm text-slate-500">
+        Tip: pas de zoektermen aan (gebruik <code>OR</code> tussen functietitels).
+      </p>
+      <p class="mt-2 text-xs text-amber-600">
+        Let op: grote jobboards (Indeed/LinkedIn/NVB) kunnen niet inline worden getoond zonder proxy i.v.m. CORS/ToS. De zoeklinks hieronder openen in een nieuw tabblad; regionale sites kun je later via een proxy inline tonen.
+      </p>
+    </section>
+
+    <!-- Bronnen/links -->
+    <section class="card bg-white p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Zoeklinks (openen in nieuw tabblad)</h2>
+        <div class="text-sm text-slate-500">Laatste update: <span id="lastUpdated">-</span></div>
+      </div>
+      <div id="links" class="grid grid-auto gap-3"></div>
+    </section>
+
+    <!-- Gecombineerd overzicht (inline pas met proxy) -->
+    <section class="card bg-white p-5">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Gecombineerd overzicht</h2>
+        <div class="text-sm text-slate-500">Gevonden: <span id="aggCount">0</span></div>
+      </div>
+      <div id="aggStatus" class="text-sm text-slate-500 mb-3">Nog niet gezocht.</div>
+      <div id="aggList" class="grid grid-auto gap-3"></div>
+      <p class="mt-3 text-xs text-slate-500">Inline tonen werkt zodra je een kleine proxy gebruikt (lokaal of Cloudflare Worker). Zonder proxy blijft dit blok leeg.</p>
+    </section>
+
+    <!-- Tracker -->
+    <section class="card bg-white p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">Mijn vacature-tracker</h2>
+        <div class="text-sm text-slate-500">Lokaal opgeslagen (alleen op dit apparaat)</div>
+      </div>
+
+      <form id="addForm" class="grid md:grid-cols-5 gap-3">
+        <input id="tTitle" required placeholder="Functietitel" class="border rounded-xl px-3 py-2 md:col-span-2" />
+        <input id="tOrg" placeholder="Organisatie" class="border rounded-xl px-3 py-2" />
+        <input id="tSource" placeholder="Bron (bijv. Zuyderland)" class="border rounded-xl px-3 py-2" />
+        <input id="tUrl" type="url" placeholder="Link" class="border rounded-xl px-3 py-2 md:col-span-2" />
+        <input id="tDeadline" type="date" class="border rounded-xl px-3 py-2" />
+        <select id="tStatus" class="border rounded-xl px-3 py-2">
+          <option value="Nieuw">Nieuw</option>
+          <option value="Lezen">Lezen</option>
+          <option value="Sollicitatie">Sollicitatie</option>
+          <option value="Uitnodiging">Uitnodiging</option>
+          <option value="Afgewezen">Afgewezen</option>
+        </select>
+        <button class="btn bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2">Toevoegen</button>
+      </form>
+
+      <div class="overflow-x-auto mt-4">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-slate-600">
+              <th class="py-2 pr-3">Titel</th>
+              <th class="py-2 pr-3">Organisatie</th>
+              <th class="py-2 pr-3">Bron</th>
+              <th class="py-2 pr-3">Deadline</th>
+              <th class="py-2 pr-3">Status</th>
+              <th class="py-2 pr-3">Acties</th>
+            </tr>
+          </thead>
+          <tbody id="tBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Moodboard -->
+    <section class="card bg-white p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">Moodboard – Favorieten</h2>
+        <div class="text-sm text-slate-500">Pin vanuit overzicht/trackers · lokaal opgeslagen</div>
+      </div>
+      <form id="mbForm" class="grid md:grid-cols-5 gap-3 mb-4">
+        <input id="mbTitle" placeholder="Titel (optioneel)" class="border rounded-xl px-3 py-2 md:col-span-2" />
+        <input id="mbUrl" type="url" placeholder="URL (optioneel)" class="border rounded-xl px-3 py-2 md:col-span-2" />
+        <input id="mbNote" placeholder="Notitie (optioneel)" class="border rounded-xl px-3 py-2 md:col-span-3" />
+        <select id="mbColor" class="border rounded-xl px-3 py-2">
+          <option value="indigo">Indigo</option>
+          <option value="emerald">Emerald</option>
+          <option value="rose">Rose</option>
+          <option value="amber">Amber</option>
+          <option value="slate">Slate</option>
+        </select>
+        <button class="btn bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2">Handmatig toevoegen</button>
+      </form>
+      <div id="mbGrid" class="grid grid-auto gap-3"></div>
+      <div class="mt-4 flex gap-2">
+        <button id="mbExport" class="btn bg-slate-800 hover:bg-black text-white px-4 py-2 text-sm">Exporteer moodboard (JSON)</button>
+        <label class="btn bg-white border px-4 py-2 text-sm cursor-pointer">Importeer JSON
+          <input id="mbImport" type="file" accept="application/json,.json" class="hidden" />
+        </label>
+        <button id="mbClear" class="btn bg-white border px-4 py-2 text-sm">Alles leegmaken</button>
+      </div>
+    </section>
+
+    <footer class="py-8 text-center text-xs text-slate-500">
+      Gemaakt voor HBO-zorgvacatures in Zuid-Limburg · Werkt offline · Slaat niets extern op
+    </footer>
+  </main>
+
+  <script>
+    const byId = (id) => document.getElementById(id);
+
+    // Default profiel
+    const defaultProfile = {
+      q: 'HBO zorg OR verpleegkundige OR wijkverpleegkundige OR casemanager OR kwaliteitsmedewerker',
+      loc: 'Landgraaf, Limburg',
+      radius: 30
+    };
+
+    // Bron-URL builders (openen in nieuw tab)
+    function buildSources(q, loc, radiusKm){
+      const qEnc = encodeURIComponent(q);
+      const locEnc = encodeURIComponent(loc);
+      const r = Number(radiusKm) || 30;
+
+      return [
+        { name:'Indeed', url:`https://nl.indeed.com/jobs?q=${qEnc}&l=${locEnc}&radius=${r}` },
+        { name:'LinkedIn Jobs', url:`https://www.linkedin.com/jobs/search/?keywords=${qEnc}&location=${locEnc}&distance=${r}` },
+        { name:'Nationale Vacaturebank', url:`https://www.nationalevacaturebank.nl/vacature/zoeken/advanced?query=${qEnc}&loc=${locEnc}&radius=${r}` },
+        { name:'Werkzoeken.nl', url:`https://www.werkzoeken.nl/vacatures/?q=${qEnc}&r=${r}&l=${locEnc}` },
+        { name:'Jooble', url:`https://nl.jooble.org/vacatures-${encodeURIComponent('hbo zorg')}?rid=${r}&loc=${locEnc}` },
+        { name:'Glassdoor', url:`https://www.glassdoor.nl/Vacature/${locEnc.replaceAll('%2C+','-')}-${qEnc}-vacatures.htm` },
+        // Regionale zorginstellingen (klikbaar; inline tonen kan pas via proxy)
+        { name:'Zuyderland', url:`https://www.werkenbijzuyderland.nl/vacatures?zoekterm=${qEnc}&afstand=${r}&plaats=${locEnc}` },
+        { name:'Maastricht UMC+', url:`https://www.werkenbijmumc.nl/vacatures?search=${qEnc}` },
+        { name:'Sevagram', url:`https://www.werkenbijsevagram.nl/vacatures?search=${qEnc}` },
+        { name:'Envida', url:`https://www.werkenbijnenvida.nl/vacatures?search=${qEnc}` },
+        { name:'Mondriaan (GGZ)', url:`https://www.werkenbijmondriaan.nl/vacatures?search=${qEnc}` },
+        { name:'MeanderGroep', url:`https://www.werkenbijmeandergroepzuidlimburg.nl/vacatures?search=${qEnc}` },
+        { name:'Adelante', url:`https://www.werkenbijadelante.nl/vacatures?search=${qEnc}` },
+        { name:'Zorggroep', url:`https://www.zorggroep.nl/werken-bij/vacatures?search=${qEnc}` },
+      ];
+    }
+
+    function renderLinks(){
+      const links = byId('links');
+      links.innerHTML = '';
+      const q = byId('q').value.trim();
+      const loc = byId('loc').value.trim();
+      const radius = byId('radius').value.trim();
+
+      const sources = buildSources(q, loc, radius);
+      sources.forEach(s => {
+        const a = document.createElement('a');
+        a.href = s.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        a.className = 'block p-4 border rounded-xl hover:border-indigo-400 hover:bg-indigo-50/40 transition';
+        a.innerHTML = `<div class="flex items-center justify-between">
+          <div class="font-medium">${s.name}</div>
+          <div class="text-slate-500 text-sm truncate max-w-[60%]">${s.url}</div>
+        </div>`;
+        links.appendChild(a);
+      });
+      byId('lastUpdated').textContent = new Date().toLocaleString();
+    }
+
+    // Profiel opslaan/halen
+    function loadProfile(){
+      const saved = JSON.parse(localStorage.getItem('vr_profile')||'null');
+      const p = saved || defaultProfile;
+      byId('q').value = p.q; byId('loc').value = p.loc; byId('radius').value = p.radius;
+    }
+    function saveProfile(){
+      const p = { q:byId('q').value.trim(), loc:byId('loc').value.trim(), radius:Number(byId('radius').value)||30 };
+      localStorage.setItem('vr_profile', JSON.stringify(p));
+    }
+
+    // Open alle
+    function openAll(){
+      const container = byId('links');
+      container.querySelectorAll('a').forEach((a,i)=>{
+        setTimeout(()=> window.open(a.href,'_blank','noopener'), i*120);
+      });
+    }
+
+    // --- Tracker ---
+    const trackerKey = 'vr_tracker_items';
+    function readItems(){ return JSON.parse(localStorage.getItem(trackerKey)||'[]'); }
+    function writeItems(items){ localStorage.setItem(trackerKey, JSON.stringify(items)); renderTable(); }
+    function addItem(e){
+      e.preventDefault();
+      const item = {
+        id: crypto.randomUUID(),
+        title: byId('tTitle').value.trim(),
+        org: byId('tOrg').value.trim(),
+        source: byId('tSource').value.trim(),
+        url: byId('tUrl').value.trim(),
+        deadline: byId('tDeadline').value,
+        status: byId('tStatus').value,
+        created: new Date().toISOString()
+      };
+      const items = readItems();
+      items.unshift(item);
+      writeItems(items);
+      byId('addForm').reset();
+    }
+    function delItem(id){ writeItems(readItems().filter(x=>x.id!==id)); }
+    function setStatus(id, status){
+      const items = readItems();
+      const i = items.findIndex(x=>x.id===id);
+      if(i>-1){ items[i].status = status; writeItems(items); }
+    }
+    function renderTable(){
+      const tb = byId('tBody');
+      tb.innerHTML = '';
+      readItems().forEach(x=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-2 pr-3"><a class="text-indigo-600 hover:underline" href="${x.url||'#'}" target="_blank" rel="noopener">${x.title||'-'}</a></td>
+          <td class="py-2 pr-3">${x.org||'-'}</td>
+          <td class="py-2 pr-3 text-slate-500">${x.source||'-'}</td>
+          <td class="py-2 pr-3">${x.deadline?new Date(x.deadline).toLocaleDateString():''}</td>
+          <td class="py-2 pr-3">
+            <select class="border rounded-lg px-2 py-1" onchange="setStatus('${x.id}', this.value)">
+              ${['Nieuw','Lezen','Sollicitatie','Uitnodiging','Afgewezen'].map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td class="py-2 pr-3 flex gap-3">
+            <button class="text-emerald-700 hover:underline" onclick='addToBoard({title:${JSON.stringify(x.title||"-")},url:"${x.url||""}",source:"${x.source||"Tracker"}"})'>Moodboard</button>
+            <button class="text-red-600 hover:underline" onclick="delItem('${x.id}')">Verwijderen</button>
+          </td>`;
+        tb.appendChild(tr);
+      })
+    }
+
+    // CSV export/import
+    function exportCsv(){
+      const items = readItems();
+      const headers = ['id','title','org','source','url','deadline','status','created'];
+      const rows = [headers.join(',')].concat(items.map(x=> headers.map(h=>`"${(x[h]||'').toString().replaceAll('"','""')}"`).join(',')));
+      const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'vacature-tracker.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+    function importCsv(file){
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result; const lines = text.split(/\r?\n/).filter(Boolean);
+        const headers = lines.shift().split(',').map(h=>h.replaceAll('"',''));
+        const items = lines.map(line=>{
+          const cols = line.match(/(\"(?:[^\"]|\"\")*\"|[^,]+)/g).map(c=>c.replace(/^\"|\"$/g,'').replaceAll('""','"'));
+          const obj = {}; headers.forEach((h,i)=> obj[h]=cols[i]||'');
+          if(!obj.id) obj.id = crypto.randomUUID();
+          return obj;
+        });
+        writeItems(items);
+      };
+      reader.readAsText(file);
+    }
+
+    // ===== Moodboard =====
+    const MB_KEY = 'vr_moodboard_items';
+    function readBoard(){ return JSON.parse(localStorage.getItem(MB_KEY)||'[]'); }
+    function writeBoard(items){ localStorage.setItem(MB_KEY, JSON.stringify(items)); renderBoard(); }
+    function addToBoard(obj){
+      const item = {
+        id: crypto.randomUUID(),
+        title: (obj.title||'').toString().trim(),
+        url: (obj.url||'').toString().trim(),
+        source: (obj.source||'').toString().trim(),
+        note: (obj.note||'').toString().trim(),
+        color: (obj.color||'indigo').toString(),
+        created: new Date().toISOString()
+      };
+      const arr = readBoard();
+      arr.unshift(item);
+      writeBoard(arr);
+    }
+    function removeFromBoard(id){ writeBoard(readBoard().filter(x=>x.id!==id)); }
+    function updateBoardNote(id, note){ const a=readBoard(); const i=a.findIndex(x=>x.id===id); if(i>-1){ a[i].note = note; writeBoard(a);} }
+    function favicon(u){ try{ const d=new URL(u).hostname.replace(/^www\./,''); return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(d)}&sz=64`; }catch{ return ''; } }
+    function colorClass(c){
+      const map={ indigo:'ring-indigo-200 bg-indigo-50', emerald:'ring-emerald-200 bg-emerald-50', rose:'ring-rose-200 bg-rose-50', amber:'ring-amber-200 bg-amber-50', slate:'ring-slate-200 bg-slate-50' };
+      return map[c]||map.indigo;
+    }
+    function renderBoard(){
+      const grid = byId('mbGrid');
+      grid.innerHTML='';
+      readBoard().forEach(x=>{
+        const card = document.createElement('div');
+        card.className = `p-4 border rounded-xl ring-1 ${colorClass(x.color)} shadow-sm`;
+        const icon = x.url ? `<img src="${favicon(x.url)}" class="w-6 h-6 rounded" alt="">` : '';
+        card.innerHTML = `
+          <div class="flex items-start gap-2">
+            ${icon}
+            <div class="grow">
+              <div class="flex items-center gap-2">
+                <a class="font-medium text-slate-800 hover:underline" href="${x.url||'#'}" target="_blank" rel="noopener">${escapeHtml(x.title||x.url||'Zonder titel')}</a>
+                <span class="text-xs text-slate-500">${escapeHtml(x.source||'')}</span>
+              </div>
+              <textarea class="mt-2 w-full border rounded-lg px-2 py-1 text-sm" rows="2" placeholder="Notitie…" oninput="updateBoardNote('${x.id}', this.value)">${(x.note||'')}</textarea>
+              <div class="mt-2 flex gap-3 text-sm">
+                <button class="text-rose-700 hover:underline" onclick="removeFromBoard('${x.id}')">Verwijderen</button>
+              </div>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // === (optioneel) proxyloze aggregate placeholder ===
+    async function aggregate() {
+      // Zonder proxy kunnen we niet inline scrapen -> laat melding zien
+      byId('aggStatus').textContent = 'Inline tonen vereist een kleine proxy (lokaal of Cloudflare Worker). Zoeklinks hierboven werken wél.';
+      byId('aggList').innerHTML = '';
+      byId('aggCount').textContent = '0';
+    }
+
+    // helpers
+    function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // Events
+    byId('refresh').addEventListener('click', renderLinks);
+    byId('openAll').addEventListener('click', openAll);
+    byId('saveProfile').addEventListener('click', ()=>{ saveProfile(); renderLinks(); });
+    byId('addForm').addEventListener('submit', addItem);
+    byId('exportTracker').addEventListener('click', exportCsv);
+    byId('importCsv').addEventListener('change', (e)=> e.target.files[0] && importCsv(e.target.files[0]));
+    byId('aggregate').addEventListener('click', aggregate);
+
+    // Moodboard events
+    byId('mbForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      addToBoard({ title: byId('mbTitle').value, url: byId('mbUrl').value, note: byId('mbNote').value, color: byId('mbColor').value, source:'Handmatig' });
+      byId('mbForm').reset();
+    });
+    byId('mbExport').addEventListener('click', ()=>{
+      const data = JSON.stringify(readBoard(), null, 2);
+      const blob = new Blob([data], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a=document.createElement('a'); a.href=url; a.download='moodboard.json'; a.click(); URL.revokeObjectURL(url);
+    });
+    byId('mbImport').addEventListener('change', (e)=>{
+      const f = e.target.files[0]; if(!f) return; const r=new FileReader();
+      r.onload=()=>{ try{ const j=JSON.parse(r.result); if(Array.isArray(j)) writeBoard(j);}catch{} };
+      r.readAsText(f);
+    });
+    byId('mbClear').addEventListener('click', ()=>{ if(confirm('Weet je zeker dat je het moodboard wilt leegmaken?')) writeBoard([]); });
+
+    // Init
+    loadProfile();
+    renderLinks();
+    renderTable();
+    renderBoard();
+  </script>
+</body>
+</html>
