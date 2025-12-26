@@ -34,7 +34,7 @@
   <main class="wrap" id="start">
     <section class="card">
       <!-- Gift icon -->
-      <div class="gift" id="env" aria-hidden="true">
+      <div class="gift" id="giftIcon" aria-hidden="true">
         <div class="gift-lid"></div>
         <div class="gift-box"></div>
         <div class="gift-ribbon-v"></div>
@@ -125,6 +125,22 @@
         <div class="row">
           <button class="mini" id="finalRestart" type="button">Nog een keer 🎁</button>
           <button class="mini primary" id="finalClose" type="button">Sluiten ✨</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- "Closed" screen (can't truly close tabs) -->
+    <div class="closed" id="closed" aria-hidden="true">
+      <div class="closed-box">
+        <div class="closed-top">💛💛💛</div>
+        <h3>Klaar…</h3>
+        <p>
+          Je kunt dit tabblad nu sluiten.<br>
+          (Browsers laten websites meestal niet automatisch “echt” afsluiten.)
+        </p>
+        <div class="row">
+          <button class="mini" id="closedBack" type="button">Terug</button>
+          <button class="mini primary" id="closedTryClose" type="button">Probeer sluiten ✨</button>
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
-# Kiki Surprise Site ✨🎁 (v5)
+# Kiki Surprise Site ✨🎁 (v6)
 
-- Extra sneeuw (veel zichtbaarder)
-- Mooier cadeau-icoon
-- Afsluiten → grotere/longer love-explosion → eindpagina “Fijne kerstdagen”
+Fixes:
+- Finale-knoppen werkten niet (CSS overlay blokkeerde clicks) ✅
+- Afsluiten → grotere/langer zichtbare liefdes-explosie ✅
+- Gift “easter egg”: pop + confetti bij openen ✅
+- Extra “Closed” scherm met uitleg (tabs kun je niet altijd automatisch sluiten) ✅
 
 ## Video’s aanpassen
 In `assets/app.js`:
@@ -10,4 +12,4 @@ In `assets/app.js`:
 - `CONFIG.video2.id` + `CONFIG.video2.lengthSeconds`
 
 ## Cache tip
-Zie je oude versie? Hard refresh (Ctrl+Shift+R) of incognito.
+Hard refresh (Ctrl+Shift+R) of incognito.
