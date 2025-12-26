@@ -4,38 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Voor Kiki ✨</title>
+
+  <meta name="theme-color" content="#0a0710" />
+  <meta property="og:title" content="Voor Kiki ✨" />
+  <meta property="og:description" content="Een luxe kleine verrassing… omdat jij jij bent." />
+  <meta property="og:image" content="assets/og.png" />
+
   <link rel="icon" href="assets/favicon.svg" />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
+
 <body>
-  <div class="bg">
+  <!-- Luxe kerst-achtergrond -->
+  <div class="bg" aria-hidden="true">
     <div class="stars"></div>
     <div class="glitter"></div>
-    <div class="snow"></div>
+    <div class="snow snow1"></div>
+    <div class="snow snow2"></div>
+    <div class="snow snow3"></div>
+    <div class="lights"></div>
   </div>
+
+  <!-- Particles for wow -->
+  <div class="particles" id="particles" aria-hidden="true"></div>
 
   <!-- START -->
-  <div class="wrap" id="start">
-    <div class="card">
-      <div class="envelope" id="env">
+  <main class="wrap" id="start">
+    <section class="card">
+      <div class="envelope" id="env" aria-hidden="true">
         <div class="flap"></div>
         <div class="seal"></div>
+        <div class="shine"></div>
       </div>
 
-      <div class="badge"><span class="spark"></span><span>Voor de allerliefste Kiki</span></div>
-      <h1>Ik heb iets voor je ✨</h1>
-      <p>Een luxe kleine verrassing… omdat jij jij bent.</p>
-      <div class="bigline">Dankjewel dat je er bent. 💛<br>Tip: zet je geluid aan 🔊</div>
+      <div class="badge">
+        <span class="spark" aria-hidden="true"></span>
+        <span>Voor de allerliefste Kiki</span>
+      </div>
 
-      <button class="btn" id="openGift">Open de verrassing 🎁</button>
+      <h1>Ik heb iets voor je <span aria-hidden="true">✨</span></h1>
+      <p>Een luxe kleine verrassing… omdat jij jij bent.</p>
+      <div class="bigline">Dankjewel dat je er bent. <span aria-hidden="true">💛</span><br>Tip: zet je geluid aan <span aria-hidden="true">🔊</span></div>
+
+      <button class="btn" id="openGift" type="button">Open de verrassing <span aria-hidden="true">🎁</span></button>
 
       <div class="hint">iPhone tip: voor écht fullscreen tik je in de video op ⛶.</div>
-      <div class="tiny">Na deel 1 verschijnt een knop om verder te gaan. ✨</div>
-    </div>
-  </div>
+      <div class="tiny">Na deel 1 verschijnt een knop om verder te gaan. <span aria-hidden="true">✨</span></div>
+    </section>
+  </main>
 
   <!-- LOADER -->
-  <div class="loader" id="loader">
+  <div class="loader" id="loader" aria-hidden="true">
     <div class="loadbox">
       <div class="loadtitle">✨ Even magie laden…</div>
       <div class="loadsub">Dit duurt heel kort.</div>
@@ -44,47 +63,48 @@
   </div>
 
   <!-- PLAYER -->
-  <div class="player" id="player">
-    <div class="top">
+  <section class="player" id="player" aria-hidden="true">
+    <header class="top">
       <div class="chip">Voor Kiki ✨</div>
-      <div style="display:flex; gap:10px">
-        <button class="chip" id="fsBtn" type="button">Fullscreen</button>
+      <div class="topright">
+        <button class="chip btn-chip" id="fsBtn" type="button">Fullscreen</button>
         <div class="chip" id="which">Deel 1</div>
       </div>
-    </div>
+    </header>
 
-    <iframe id="frame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <iframe id="frame" src="" allow="autoplay; fullscreen" allowfullscreen title="Surprise video"></iframe>
 
-    <!-- overlay for centered modal -->
+    <!-- Overlay + centered modal after part 1 -->
     <div class="overlay" id="overlay" aria-hidden="true"></div>
 
-    <div class="banner" id="banner">
-      <h2>Oké… nu open je ’m écht 🎁</h2>
-      <p>Klaar voor het volgende stukje? Tik op <b>Open deel 2</b>. 💛</p>
-      <div class="row">
-        <button class="mini" id="replay1">Nog eens ✨</button>
-        <button class="mini primary" id="play2">Open deel 2 💛</button>
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+      <div class="modalbox">
+        <h2 id="modalTitle">Oké… nu open je ’m écht <span aria-hidden="true">🎁</span></h2>
+        <p>Klaar voor het volgende stukje? Tik op <b>Open deel 2</b>. <span aria-hidden="true">💛</span></p>
+        <div class="row">
+          <button class="mini" id="replay1" type="button">Nog eens <span aria-hidden="true">✨</span></button>
+          <button class="mini primary" id="play2" type="button">Open deel 2 <span aria-hidden="true">💛</span></button>
+        </div>
       </div>
     </div>
 
-    <div class="end" id="end">
+    <!-- End modal -->
+    <div class="end" id="end" aria-hidden="true">
       <div class="box">
-        <h3>Dankjewel, Kiki 💛</h3>
+        <h3>Dankjewel, Kiki <span aria-hidden="true">💛</span></h3>
         <p>
           Dankjewel dat je er bent.<br>
           En dat jij… gewoon jij bent.
         </p>
         <div class="sig">— Kevin</div>
         <div class="row">
-          <button class="mini" id="again">Nog een keer</button>
-          <button class="mini primary" id="closeEnd">Afsluiten 💥💛</button>
+          <button class="mini" id="again" type="button">Nog een keer</button>
+          <button class="mini primary" id="closeEnd" type="button">Afsluiten <span aria-hidden="true">💥💛</span></button>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="hearts" id="hearts" aria-hidden="true"></div>
-  </div>
-
-  <script src="assets/app.js" defer></script>
+  <script src="assets/app.js"></script>
 </body>
 </html>

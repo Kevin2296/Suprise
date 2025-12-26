@@ -1,12 +1,11 @@
-# Kiki Surprise Site
+# Kiki Surprise Site ✨🎁
 
-Static one-page surprise site for a gift 🎁
+GitHub Pages-ready verrassingspagina.
 
-## Edit the videos
-Open `assets/app.js` and change:
-- `VIDEO1_ID`
-- `VIDEO2_ID`
-- `PART1_LENGTH` and `PART2_LENGTH`
+## Aanpassen
+In `assets/app.js`:
+- `CONFIG.video1.id` + `CONFIG.video1.lengthSeconds`
+- `CONFIG.video2.id` + `CONFIG.video2.lengthSeconds`
 
-## Deploy on GitHub Pages
-Settings → Pages → Deploy from branch → `main` → `/(root)`
+## Tip
+Zie je oude styling? Doe een **hard refresh** (Ctrl+Shift+R) of open incognito.
