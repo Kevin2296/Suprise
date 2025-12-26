@@ -56,8 +56,8 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
 
 /* Subtle christmas lights line near top */
 .lights{
-  position:absolute; left:-10%; right:-10%; top:-10px; height:100px;
-  opacity:.25;
+  position:absolute; left:-10%; right:-10%; top:-10px; height:110px;
+  opacity:.26;
   background:
     radial-gradient(14px 14px at 10% 40px, rgba(255,138,31,.95) 30%, transparent 60%),
     radial-gradient(12px 12px at 22% 48px, rgba(255,226,178,.90) 30%, transparent 60%),
@@ -146,6 +146,23 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
   backdrop-filter: blur(12px);
 }
 
+/* Gift icon (iOS-ish) */
+.giftapp{
+  width:152px; height:116px;
+  margin:2px auto 14px;
+  filter: drop-shadow(0 18px 55px rgba(0,0,0,.35));
+  transform: translateZ(0);
+  animation: floaty 3.2s ease-in-out infinite;
+}
+.giftapp-svg{width:100%; height:100%; display:block}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.giftapp.pop{ animation: pop 520ms ease both; }
+@keyframes pop{
+  0%{ transform:scale(1) translateY(0); }
+  35%{ transform:scale(1.08) translateY(-2px) rotate(-1deg); }
+  100%{ transform:scale(1) translateY(0); }
+}
+
 /* Badge + heading */
 .badge{
   display:inline-flex; gap:10px; align-items:center;
@@ -157,91 +174,17 @@ html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
 .spark{
   width:10px;height:10px;border-radius:999px;
   background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  box-shadow:0 0 18px rgba(255,138,31,.55)
+  box-shadow:0 0 18px rgba(255,138,31,.55);
+  animation: pulseDot 1.9s ease-in-out infinite;
 }
+@keyframes pulseDot{
+  0%,100%{transform:scale(1); filter:saturate(1)}
+  50%{transform:scale(1.35); filter:saturate(1.1)}
+}
+
 h1{margin:6px 0 10px; font-size:30px; letter-spacing:.2px}
 p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
 .bigline{margin:10px 0 18px; color:var(--muted2); font-size:15px; line-height:1.55}
-
-/* Gift icon (wow) */
-.gift{
-  width:152px;height:116px;margin:2px auto 14px;position:relative;
-  filter: drop-shadow(0 18px 55px rgba(0,0,0,.35));
-  transform: translateZ(0);
-  animation: floaty 3.2s ease-in-out infinite;
-}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
-.gift-box{
-  position:absolute; left:10px; right:10px; bottom:0;
-  height:78px;
-  border-radius:22px;
-  background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter: blur(8px);
-}
-.gift-lid{
-  position:absolute; left:6px; right:6px; top:18px;
-  height:46px;
-  border-radius:22px;
-  background:linear-gradient(135deg, rgba(255,226,178,.16), rgba(255,138,31,.10));
-  border:1px solid rgba(255,255,255,.16);
-  transform-origin: 50% 100%;
-  box-shadow: 0 18px 38px rgba(0,0,0,.22);
-}
-.gift-ribbon-v{
-  position:absolute; left:50%; top:22px; bottom:10px;
-  width:18px; transform:translateX(-50%);
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  box-shadow:0 0 30px rgba(255,138,31,.25);
-}
-.gift-ribbon-h{
-  position:absolute; left:18px; right:18px; top:54px;
-  height:16px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  box-shadow:0 0 30px rgba(255,138,31,.18);
-}
-.gift-bow{
-  position:absolute; left:50%; top:6px;
-  width:76px; height:44px;
-  transform:translateX(-50%);
-  display:flex; gap:10px; justify-content:center; align-items:center;
-}
-.gift-bow span{
-  width:34px; height:26px;
-  border-radius:18px 18px 18px 6px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  box-shadow:0 0 24px rgba(255,138,31,.25);
-  transform: rotate(-12deg);
-}
-.gift-bow span:last-child{
-  border-radius:18px 18px 6px 18px;
-  transform: rotate(12deg);
-}
-.gift-shine{
-  position:absolute; inset:-20%;
-  background: radial-gradient(260px 120px at 30% 25%, rgba(255,226,178,.28), transparent 60%);
-  transform: rotate(-8deg);
-  opacity:.95;
-  pointer-events:none;
-}
-
-/* "Easter egg" pop */
-.gift.pop{ animation: pop 520ms ease both; }
-@keyframes pop{
-  0%{ transform:scale(1) translateY(0); }
-  35%{ transform:scale(1.06) translateY(-2px); }
-  100%{ transform:scale(1) translateY(0); }
-}
-
-/* Opening animation */
-.opening .gift-lid{ animation: lidopen .75s ease forwards; }
-@keyframes lidopen{
-  from{ transform: translateY(0) rotateX(0deg); }
-  to{ transform: translateY(-18px) rotateX(62deg); }
-}
 
 /* Buttons */
 .btn{
@@ -406,9 +349,9 @@ p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
               radial-gradient(380px 190px at 70% 60%, rgba(255,138,31,.16), transparent 60%);
   transform: rotate(-12deg);
   opacity:.9;
-  pointer-events:none; /* FIX: allow clicks on buttons */
+  pointer-events:none;
 }
-.finale-box > *{ position:relative; z-index:1; } /* ensure content above overlay */
+.finale-box > *{ position:relative; z-index:1; }
 .finale-top{font-size:22px; margin-bottom:6px}
 .finale-box h3{margin:0 0 10px; font-size:26px}
 .finale-box p{margin:0; color:rgba(255,255,255,.80); font-size:16px; line-height:1.5}
@@ -448,6 +391,22 @@ p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
 @keyframes burst{
   0%   { opacity:0; transform:translate(var(--x), var(--y)) scale(.55) rotate(0deg); }
   10%  { opacity:1; }
-  72%  { opacity:1; }
-  100% { opacity:0; transform:translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) scale(1.22) rotate(var(--rot)); }
+  78%  { opacity:1; }
+  100% { opacity:0; transform:translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) scale(1.25) rotate(var(--rot)); }
+}
+
+/* Flash (makes explosions feel punchy) */
+.flash{
+  position:fixed; inset:0;
+  pointer-events:none;
+  opacity:0;
+  z-index:9998;
+  background: radial-gradient(520px 260px at 50% 70%, rgba(255,226,178,.30), transparent 70%),
+              radial-gradient(420px 220px at 45% 62%, rgba(255,138,31,.18), transparent 70%);
+}
+.flash.show{ animation: flash 850ms ease-out both; }
+@keyframes flash{
+  0%{opacity:0}
+  16%{opacity:.44}
+  100%{opacity:0}
 }
