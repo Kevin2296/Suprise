@@ -1,21 +1,14 @@
-# Kiki Surprise Site ✨🎁 (v9)
+# Kiki Surprise Site ✨🎁 (v7)
 
-## Fixes in v9
-- Cadeau-icon is opnieuw opgebouwd (iOS-ish) en heeft nu een echte "open" easter egg (deksel + strik popt).
-- Knop FX werken op **click** (mobiel-proof), niet alleen pointerdown.
-- Deel 2 start **iets later** zodat explosies niet 'wegvallen' door iframe reload.
-- iPhone bug opgelost: na "Nog een keer" werkt "Open de verrassing" weer (state reset + busy/disabled).
+## Wat is dat bolletje in “Voor de allerliefste Kiki”?
+Dat is puur een luxe accent (een “gloed/spark”) zodat de badge wat levendiger oogt.
+In v7 pulseert het subtiel. Wil je het weg? In `index.html` haal je `<span class="spark"></span>` weg.
 
 ## Video’s aanpassen
 In `assets/app.js`:
 - `CONFIG.video1.id` + `CONFIG.video1.lengthSeconds`
 - `CONFIG.video2.id` + `CONFIG.video2.lengthSeconds`
 
-## Bolletje in badge
-`<span class="spark"></span>` is puur decor (glow/pulse).
-
-
-### v9 note
-- Unregisters any existing Service Worker on this domain (prevents stale cache from older sites)
-- Removes `passive` listener options for widest iOS compatibility
-- Reloads on BFCache restore
+## iPhone / tab sluiten
+Mobiele browsers laten websites meestal niet automatisch tabs sluiten.
+Daarom tonen we na “Sluiten” een nette eindkaart met uitleg.
