@@ -9,7 +9,6 @@
 html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
 *{box-sizing:border-box}
-button{touch-action:manipulation}
 
 /* Background: luxe kerst */
 .bg{
@@ -80,8 +79,8 @@ button{touch-action:manipulation}
   animation: snow 9s linear infinite;
 }
 .snow1{
-  opacity:.72;
-  background-size: 200px 200px;
+  opacity:.70;
+  background-size: 220px 220px;
   background-image:
     radial-gradient(2px 2px at 8% 10%, rgba(255,255,255,.76) 40%, transparent 42%),
     radial-gradient(2px 2px at 18% 42%, rgba(255,255,255,.64) 40%, transparent 42%),
@@ -96,8 +95,8 @@ button{touch-action:manipulation}
   animation-duration: 7s;
 }
 .snow2{
-  opacity:.48;
-  background-size: 280px 280px;
+  opacity:.45;
+  background-size: 300px 300px;
   background-image:
     radial-gradient(3px 3px at 12% 30%, rgba(255,255,255,.48) 40%, transparent 42%),
     radial-gradient(2px 2px at 22% 70%, rgba(255,255,255,.36) 40%, transparent 42%),
@@ -108,8 +107,8 @@ button{touch-action:manipulation}
   animation-duration: 10s;
 }
 .snow3{
-  opacity:.34;
-  background-size: 400px 400px;
+  opacity:.32;
+  background-size: 420px 420px;
   background-image:
     radial-gradient(4px 4px at 18% 62%, rgba(255,255,255,.32) 40%, transparent 42%),
     radial-gradient(3px 3px at 40% 80%, rgba(255,255,255,.24) 40%, transparent 42%),
@@ -118,8 +117,8 @@ button{touch-action:manipulation}
   animation-duration: 14s;
 }
 .snow4{
-  opacity:.24;
-  background-size: 560px 560px;
+  opacity:.22;
+  background-size: 580px 580px;
   background-image:
     radial-gradient(5px 5px at 20% 20%, rgba(255,255,255,.20) 40%, transparent 42%),
     radial-gradient(4px 4px at 64% 28%, rgba(255,255,255,.16) 40%, transparent 42%),
@@ -147,106 +146,21 @@ button{touch-action:manipulation}
   backdrop-filter: blur(12px);
 }
 
-/* Gift icon (more iOS-like) */
+/* Gift icon (iOS-ish) */
 .giftapp{
   width:152px; height:116px;
   margin:2px auto 14px;
-  position:relative;
   filter: drop-shadow(0 18px 55px rgba(0,0,0,.35));
+  transform: translateZ(0);
+  animation: floaty 3.2s ease-in-out infinite;
 }
-.stack{
-  position:absolute; inset:0;
-  border-radius:30px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter: blur(8px);
-}
-.stack.s1{ transform:rotate(-8deg) translate(-2px,1px); opacity:.35; }
-.stack.s2{ transform:rotate(6deg) translate(2px,2px); opacity:.28; }
-
-.front{
-  position:absolute; inset:0;
-  border-radius:30px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter: blur(10px);
-  overflow:hidden;
-}
-.front:after{
-  content:"";
-  position:absolute; inset:-35% -35%;
-  background: radial-gradient(240px 140px at 20% 20%, rgba(255,226,178,.18), transparent 60%),
-              radial-gradient(240px 140px at 70% 70%, rgba(255,138,31,.12), transparent 60%);
-  transform:rotate(-14deg);
-  opacity:.9;
-  pointer-events:none;
-}
-
-.gift{ position:absolute; left:50%; top:50%; transform:translate(-50%,-42%); width:86px; height:74px; }
-.box{
-  position:absolute; left:0; right:0; bottom:0; height:48px;
-  border-radius:18px;
-  background:rgba(0,0,0,.08);
-  border:1px solid rgba(255,255,255,.10);
-}
-.lid{
-  position:absolute; left:0; right:0; top:18px; height:14px;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  box-shadow:0 0 22px rgba(255,138,31,.30);
-  transform-origin: 50% 70%;
-}
-.ribbon.v{
-  position:absolute; left:50%; top:18px; bottom:0; width:12px;
-  transform:translateX(-50%);
-  border-radius:10px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-}
-.ribbon.h{
-  position:absolute; left:0; right:0; top:18px; height:10px;
-  border-radius:10px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-}
-.bow{
-  position:absolute; top:2px; width:28px; height:18px;
-  background:linear-gradient(135deg,var(--gold1),var(--gold2));
-  border-radius: 18px 18px 18px 6px;
-  box-shadow:0 0 18px rgba(255,138,31,.25);
-}
-.bow.left{ left:16px; transform:rotate(-14deg); }
-.bow.right{
-  right:16px;
-  transform:rotate(14deg) scaleX(-1);
-}
-
-/* idle subtle float */
-.gfx3d{ transform: translateZ(0); }
-.giftapp{ animation: floaty 3.2s ease-in-out infinite; transform: translateZ(0); }
+.giftapp-svg{width:100%; height:100%; display:block}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
-/* easter egg: box opens */
-.giftapp.open .lid{ animation: lidOpen 900ms cubic-bezier(.2,.9,.2,1) both; }
-.giftapp.open .bow{ animation: bowPop 900ms cubic-bezier(.2,.9,.2,1) both; }
-.giftapp.open .front:before{
-  content:"✨";
-  position:absolute; left:18px; top:16px;
-  font-size:18px; opacity:0;
-  animation: sparkle 900ms ease both;
-}
-@keyframes lidOpen{
-  0%{ transform:translateY(0) rotateX(0deg); }
-  40%{ transform:translateY(-10px) rotateX(55deg); }
-  100%{ transform:translateY(-2px) rotateX(10deg); }
-}
-@keyframes bowPop{
-  0%{ opacity:1; transform:translateY(0) scale(1); }
-  45%{ transform:translateY(-10px) scale(1.06); }
-  100%{ transform:translateY(-2px) scale(1.01); }
-}
-@keyframes sparkle{
-  0%{ opacity:0; transform:translateY(6px) scale(.9) rotate(-10deg); }
-  35%{ opacity:.9; }
-  100%{ opacity:0; transform:translateY(-10px) scale(1.2) rotate(10deg); }
+.giftapp.pop{ animation: pop 520ms ease both; }
+@keyframes pop{
+  0%{ transform:scale(1) translateY(0); }
+  35%{ transform:scale(1.08) translateY(-2px) rotate(-1deg); }
+  100%{ transform:scale(1) translateY(0); }
 }
 
 /* Badge + heading */
@@ -286,10 +200,9 @@ p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
   box-shadow:0 14px 42px rgba(255,138,31,.30);
   margin-top:10px;
   transform:translateY(0);
-  transition:transform .15s ease, filter .2s ease, opacity .2s ease;
+  transition:transform .15s ease, filter .2s ease;
 }
 .btn:active{transform:translateY(1px); filter:saturate(1.04)}
-.btn:disabled{opacity:.55; cursor:not-allowed}
 .hint{margin-top:10px; font-size:13px; color:rgba(255,255,255,.62)}
 .tiny{margin-top:12px; font-size:12px; color:rgba(255,255,255,.45)}
 
@@ -381,9 +294,7 @@ p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
   color:rgba(255,255,255,.92);
   font-weight:950;
   cursor:pointer;
-  transition:opacity .2s ease;
 }
-.mini:disabled{opacity:.55; cursor:not-allowed}
 .mini.primary{
   border:0;
   background:linear-gradient(135deg,var(--gold1),var(--gold2));
