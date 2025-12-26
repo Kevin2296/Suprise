@@ -9,23 +9,24 @@
       --bg:#06060a; --fg:#fff;
       --muted:rgba(255,255,255,.78);
       --muted2:rgba(255,255,255,.55);
-      --gold1:#ffd38a; --gold2:#ff7a00;
-      --card:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.10);
-      --shadow: 0 22px 70px rgba(0,0,0,.55);
+      --gold1:#ffe2b2; --gold2:#ff8a1f;
+      --card:rgba(255,255,255,.07);
+      --stroke:rgba(255,255,255,.12);
+      --shadow: 0 22px 70px rgba(0,0,0,.60);
     }
     html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
     *{box-sizing:border-box}
 
-    /* Background */
+    /* Background: luxe kerst */
     .bg{
       position:fixed; inset:0; pointer-events:none; overflow:hidden;
       background:
-        radial-gradient(900px 520px at 20% 10%, rgba(255,122,0,.18), transparent 60%),
-        radial-gradient(760px 520px at 80% 30%, rgba(255,211,138,.14), transparent 60%),
-        radial-gradient(980px 780px at 50% 120%, rgba(255,122,0,.10), transparent 60%),
-        linear-gradient(#050507, #09090f);
+        radial-gradient(900px 520px at 20% 10%, rgba(255,138,31,.22), transparent 62%),
+        radial-gradient(760px 520px at 80% 30%, rgba(255,226,178,.16), transparent 62%),
+        radial-gradient(980px 780px at 50% 120%, rgba(255,138,31,.10), transparent 62%),
+        linear-gradient(#050507, #090913);
+      filter:saturate(1.05);
     }
     .stars{
       position:absolute; inset:-20%;
@@ -38,74 +39,148 @@
       opacity:.55;
       animation: drift 16s ease-in-out infinite alternate;
     }
+    .glitter{
+      position:absolute; inset:0; opacity:.22;
+      background:
+        radial-gradient(2px 2px at 15% 35%, rgba(255,226,178,.95) 30%, transparent 35%),
+        radial-gradient(1px 1px at 65% 25%, rgba(255,138,31,.95) 30%, transparent 35%),
+        radial-gradient(2px 2px at 78% 62%, rgba(255,226,178,.80) 30%, transparent 35%),
+        radial-gradient(1px 1px at 40% 78%, rgba(255,138,31,.80) 30%, transparent 35%);
+      animation: twinkle 3.8s ease-in-out infinite;
+    }
     @keyframes drift{
       from{transform:translate3d(-1.5%, -1.0%, 0) scale(1)}
       to{transform:translate3d(1.5%, 1.0%, 0) scale(1.02)}
     }
+    @keyframes twinkle{0%,100%{opacity:.16}50%{opacity:.28}}
 
-    /* Start */
+    /* Falling snow (subtle) */
+    .snow {
+      position:absolute; inset:0; opacity:.35;
+      background-image:
+        radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,.55) 40%, transparent 42%),
+        radial-gradient(1px 1px at 25% 30%, rgba(255,255,255,.35) 40%, transparent 42%),
+        radial-gradient(2px 2px at 40% 20%, rgba(255,255,255,.45) 40%, transparent 42%),
+        radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,.30) 40%, transparent 42%),
+        radial-gradient(2px 2px at 70% 15%, rgba(255,255,255,.35) 40%, transparent 42%),
+        radial-gradient(1px 1px at 85% 28%, rgba(255,255,255,.25) 40%, transparent 42%);
+      animation: snow 7s linear infinite;
+      transform:translateY(-10%);
+    }
+    @keyframes snow { to { transform:translateY(10%); } }
+
+    /* Start layout */
     .wrap{position:fixed; inset:0; display:grid; place-items:center; padding:24px}
     .card{
-      width:min(580px,100%);
-      border-radius:26px;
+      width:min(600px,100%);
+      border-radius:28px;
       background:var(--card);
       border:1px solid var(--stroke);
       box-shadow:var(--shadow);
       padding:26px 22px;
       text-align:center;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
     .badge{
       display:inline-flex; gap:10px; align-items:center;
       padding:10px 14px; border-radius:999px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
       margin-bottom:14px;
     }
     .spark{
       width:12px;height:12px;border-radius:4px;
       background:linear-gradient(135deg,var(--gold1),var(--gold2));
-      box-shadow:0 0 18px rgba(255,122,0,.55)
+      box-shadow:0 0 18px rgba(255,138,31,.55)
     }
     h1{margin:6px 0 10px; font-size:30px; letter-spacing:.2px}
-    p{margin:0 0 16px; color:var(--muted); line-height:1.45; font-size:16px}
-    .bigline{margin:12px 0 18px; color:var(--muted2); font-size:15px; line-height:1.55}
+    p{margin:0 0 14px; color:var(--muted); line-height:1.45; font-size:16px}
+    .bigline{margin:10px 0 18px; color:var(--muted2); font-size:15px; line-height:1.55}
 
+    /* Envelope */
+    .envelope{
+      width:152px;height:108px;margin:2px auto 14px;position:relative;
+      border-radius:22px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 18px 55px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .flap{
+      position:absolute; left:-12%; right:-12%; top:-58%;
+      height:125%;
+      background:linear-gradient(135deg, rgba(255,226,178,.20), rgba(255,138,31,.12));
+      transform-origin:50% 92%;
+      transform:rotateX(0deg);
+      border:1px solid rgba(255,255,255,.08);
+      border-bottom:none;
+      border-radius:24px;
+    }
+    .seal{
+      position:absolute; left:50%; top:58%;
+      transform:translate(-50%,-50%);
+      width:38px;height:38px;border-radius:14px;
+      background:linear-gradient(135deg,var(--gold1),var(--gold2));
+      box-shadow:0 0 28px rgba(255,138,31,.45);
+    }
+    .opening .flap{ animation: openflap .70s ease forwards; }
+    @keyframes openflap{ from{transform:rotateX(0deg)} to{transform:rotateX(72deg)} }
+
+    /* Buttons */
     .btn{
       width:100%;
       padding:16px 18px;
       border:0;
       border-radius:18px;
       font-size:18px;
-      font-weight:900;
+      font-weight:950;
       cursor:pointer;
-      color:#120a00;
+      color:#140b00;
       background:linear-gradient(135deg,var(--gold1),var(--gold2));
-      box-shadow:0 14px 42px rgba(255,106,0,.35);
+      box-shadow:0 14px 42px rgba(255,138,31,.30);
       margin-top:10px;
+      transform:translateY(0);
+      transition:transform .15s ease, filter .2s ease;
     }
-    .btn.secondary{
-      background:rgba(255,255,255,.08);
-      color:rgba(255,255,255,.92);
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow:none;
-      font-weight:850;
-    }
+    .btn:active{transform:translateY(1px); filter:saturate(1.04)}
     .hint{margin-top:10px; font-size:13px; color:rgba(255,255,255,.62)}
     .tiny{margin-top:12px; font-size:12px; color:rgba(255,255,255,.45)}
 
-    /* Player */
-    .player{position:fixed; inset:0; display:none; background:#000; z-index:30}
-    .player.show{display:block; animation:fade .45s ease both}
+    /* Loader */
+    .loader{
+      position:fixed; inset:0; display:none; place-items:center;
+      background:rgba(0,0,0,.78);
+      backdrop-filter: blur(6px);
+      z-index:50;
+    }
+    .loader.show{display:grid; animation:fade .35s ease both}
     @keyframes fade{from{opacity:0}to{opacity:1}}
+    .loadbox{
+      width:min(520px,92%);
+      border-radius:26px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      padding:24px 20px;
+      text-align:center;
+    }
+    .loadtitle{font-weight:950; letter-spacing:.2px; margin:0 0 8px}
+    .loadsub{margin:0 0 14px; color:rgba(255,255,255,.72)}
+    .bar{height:10px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.10)}
+    .bar > div{height:100%; width:0%; border-radius:999px; background:linear-gradient(90deg,var(--gold1),var(--gold2)); animation:fill 1.1s ease forwards}
+    @keyframes fill{to{width:100%}}
+
+    /* Player */
+    .player{position:fixed; inset:0; display:none; background:#000; z-index:40}
+    .player.show{display:block; animation:fade .45s ease both}
     .player iframe{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000}
 
     .top{
       position:absolute; left:0; right:0; top:0;
       padding:14px;
       display:flex; gap:10px; justify-content:space-between; align-items:center;
-      background:linear-gradient(to bottom, rgba(0,0,0,.65), transparent);
-      z-index:40;
+      background:linear-gradient(to bottom, rgba(0,0,0,.70), transparent);
+      z-index:45;
     }
     .chip{
       font-size:12px;
@@ -118,16 +193,16 @@
     }
     button.chip{cursor:pointer}
 
-    /* Banner (after part 1) */
+    /* Banner after part 1 */
     .banner{
       position:absolute; left:14px; right:14px; bottom:14px;
       display:none;
       border-radius:20px;
       border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.42);
+      background:rgba(0,0,0,.45);
       backdrop-filter: blur(10px);
       padding:14px;
-      z-index:50;
+      z-index:60;
       text-align:left;
       box-shadow:0 18px 55px rgba(0,0,0,.45);
     }
@@ -142,21 +217,21 @@
       border:1px solid rgba(255,255,255,.16);
       background:rgba(255,255,255,.08);
       color:rgba(255,255,255,.92);
-      font-weight:900;
+      font-weight:950;
       cursor:pointer;
     }
     .mini.primary{
       border:0;
       background:linear-gradient(135deg,var(--gold1),var(--gold2));
-      color:#120a00;
+      color:#140b00;
     }
 
-    /* End (after part 2) */
+    /* End */
     .end{
       position:absolute; inset:0; display:none; place-items:center; padding:24px;
-      background:radial-gradient(900px 600px at 50% 20%, rgba(255,122,0,.18), transparent 60%), rgba(0,0,0,.72);
+      background:radial-gradient(900px 600px at 50% 20%, rgba(255,138,31,.18), transparent 60%), rgba(0,0,0,.75);
       backdrop-filter: blur(6px);
-      z-index:60;
+      z-index:70;
     }
     .end.show{display:grid; animation:fade .5s ease both}
     .end .box{
@@ -170,32 +245,51 @@
     }
     .end h3{margin:0 0 10px; font-size:24px}
     .end p{margin:0; color:rgba(255,255,255,.78); font-size:16px; line-height:1.5}
-    .sig{margin-top:14px; font-weight:900; letter-spacing:.2px}
+    .sig{margin-top:14px; font-weight:950; letter-spacing:.2px}
     .end .row{margin-top:16px}
   </style>
 </head>
+
 <body>
-  <div class="bg"><div class="stars"></div></div>
+  <div class="bg">
+    <div class="stars"></div>
+    <div class="glitter"></div>
+    <div class="snow"></div>
+  </div>
 
   <!-- START -->
   <div class="wrap" id="start">
     <div class="card">
+      <div class="envelope" id="env">
+        <div class="flap"></div>
+        <div class="seal"></div>
+      </div>
+
       <div class="badge"><span class="spark"></span><span>Voor de allerliefste Kiki</span></div>
       <h1>Ik heb iets voor je ✨</h1>
-      <p>Dit is een kleine verrassing… maar met een groot gevoel.</p>
+      <p>Een luxe kleine verrassing… omdat jij jij bent.</p>
       <div class="bigline">Dankjewel dat je er bent. 💛<br>Tip: zet je geluid aan 🔊</div>
 
-      <button class="btn" id="play1">Start deel 1 ✨</button>
+      <button class="btn" id="openGift">Open de verrassing 🎁</button>
 
-      <div class="hint">Op iPhone kan fullscreen soms pas na een extra tik op ⛶ in de player.</div>
-      <div class="tiny">Na deel 1 krijg je een melding: “maak het cadeau open”.</div>
+      <div class="hint">iPhone tip: voor écht fullscreen tik je in de video op ⛶.</div>
+      <div class="tiny">Na deel 1 verschijnt: “maak het cadeau open”.</div>
+    </div>
+  </div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loadbox">
+      <div class="loadtitle">✨ Even magie laden…</div>
+      <div class="loadsub">Dit duurt heel kort.</div>
+      <div class="bar"><div></div></div>
     </div>
   </div>
 
   <!-- PLAYER -->
   <div class="player" id="player">
     <div class="top">
-      <div class="chip" id="chipLeft">Voor Kiki ✨</div>
+      <div class="chip">Voor Kiki ✨</div>
       <div style="display:flex; gap:10px">
         <button class="chip" id="fsBtn" type="button">Fullscreen</button>
         <div class="chip" id="which">Deel 1</div>
@@ -208,8 +302,8 @@
       <h2>Maak nu het cadeau open 🎁</h2>
       <p>Oké… klaar? Druk dan op deel 2. 💛</p>
       <div class="row">
-        <button class="mini" id="replay1">Deel 1 opnieuw</button>
-        <button class="mini primary" id="play2">Speel deel 2 af 💛</button>
+        <button class="mini" id="replay1">Nog eens ✨</button>
+        <button class="mini primary" id="play2">Open deel 2 💛</button>
       </div>
     </div>
 
@@ -221,7 +315,6 @@
           En dat jij… gewoon jij bent.
         </p>
         <div class="sig">— Kevin</div>
-
         <div class="row">
           <button class="mini" id="again">Nog een keer</button>
           <button class="mini primary" id="closeEnd">Oké ✨</button>
@@ -231,18 +324,17 @@
   </div>
 
   <script>
-    // ===== YOUR VIDEOS (Streamable IDs) =====
-    const VIDEO1_ID = "c53lhh"; // https://streamable.com/c53lhh
-    const VIDEO2_ID = "uwkejn"; // https://streamable.com/uwkejn
+    // Streamable IDs
+    const VIDEO1_ID = "c53lhh";
+    const VIDEO2_ID = "uwkejn";
 
-    // ===== TIMING (seconds) =====
-    // Zet deze straks op de echte lengte van je video’s.
-    // (Je kunt in Streamable de duur zien; pas dan deze 2 waardes aan.)
+    // Timing (pas aan op echte duur)
     const PART1_LENGTH = 8;
     const PART2_LENGTH = 15;
 
-    // ===== Elements =====
     const start = document.getElementById('start');
+    const env = document.getElementById('env');
+    const loader = document.getElementById('loader');
     const player = document.getElementById('player');
     const frame = document.getElementById('frame');
     const banner = document.getElementById('banner');
@@ -250,26 +342,23 @@
     const which = document.getElementById('which');
 
     let timers = [];
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-    function clearTimers(){
-      timers.forEach(t => clearTimeout(t));
-      timers = [];
-    }
+    function clearTimers(){ timers.forEach(t => clearTimeout(t)); timers = []; }
 
     function setVideo(id){
-      // Best effort autoplay/HD
       frame.src = `https://streamable.com/e/${id}?autoplay=1&hd=1`;
-    }
-
-    function showPlayer(){
-      start.style.display = 'none';
-      player.classList.add('show');
     }
 
     function requestFs(){
       const el = document.getElementById('player');
       const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
       if (rfs) { try { rfs.call(el); } catch(e) {} }
+    }
+
+    function showPlayer(){
+      start.style.display = 'none';
+      player.classList.add('show');
     }
 
     function playPart1(){
@@ -279,8 +368,6 @@
       which.textContent = "Deel 1";
       setVideo(VIDEO1_ID);
       showPlayer();
-
-      // Na deel 1 -> banner tonen
       timers.push(setTimeout(() => banner.classList.add('show'), PART1_LENGTH * 1000));
     }
 
@@ -290,19 +377,22 @@
       end.classList.remove('show');
       which.textContent = "Deel 2";
       setVideo(VIDEO2_ID);
-
-      // Na deel 2 -> eindscherm tonen
       timers.push(setTimeout(() => end.classList.add('show'), PART2_LENGTH * 1000));
     }
 
-    // Buttons
-    document.getElementById('play1').addEventListener('click', () => {
+    document.getElementById('openGift').addEventListener('click', async () => {
+      // envelope open animation + luxe “magie laden”
+      env.classList.add('opening');
+      loader.classList.add('show');
+      await sleep(1100);
+      loader.classList.remove('show');
+
       playPart1();
       requestFs(); // best effort
     });
+
     document.getElementById('replay1').addEventListener('click', playPart1);
     document.getElementById('play2').addEventListener('click', playPart2);
-
     document.getElementById('again').addEventListener('click', () => location.reload());
     document.getElementById('closeEnd').addEventListener('click', () => end.classList.remove('show'));
     document.getElementById('fsBtn').addEventListener('click', requestFs);
