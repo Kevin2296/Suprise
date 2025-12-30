@@ -16,8 +16,13 @@
       --danger:#ff5a5a;
       --ok:#65ffb0;
     }
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    html,body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial
+    }
     *{box-sizing:border-box}
 
     .bg{
@@ -57,7 +62,15 @@
     @keyframes twinkle{0%,100%{opacity:.16}50%{opacity:.28}}
     @keyframes snow{to{transform:translateY(10%)}}
 
-    .wrap{position:fixed; inset:0; display:grid; place-items:center; padding:24px}
+    /* ✅ belangrijk: overflow zodat je op mobiel kunt scrollen als het niet past */
+    .wrap{
+      position:fixed; inset:0;
+      display:grid; place-items:center;
+      padding:24px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .card{
       width:min(640px,100%);
       border-radius:28px;
@@ -189,8 +202,16 @@
     .hintSmall{margin-top:10px; font-size:13px; color:rgba(255,255,255,.62)}
 
     /* Gate / Countdown */
-    .gate{position:fixed; inset:0; display:none; place-items:center;
-      background:rgba(0,0,0,.78); backdrop-filter: blur(6px); z-index:60;}
+    .gate{
+      position:fixed; inset:0;
+      display:none; place-items:center;
+      background:rgba(0,0,0,.78);
+      backdrop-filter: blur(6px);
+      z-index:60;
+      padding:24px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .gate.show{display:grid; animation:fade .35s ease both}
     @keyframes fade{from{opacity:0}to{opacity:1}}
     .gatebox{
@@ -219,10 +240,16 @@
       color:rgba(255,255,255,.62);
     }
     .row{display:flex; gap:10px}
-    .mini{flex:1; padding:12px 12px; border-radius:16px;
+    .mini{
+      flex:1;
+      padding:12px 12px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.08); color:rgba(255,255,255,.92);
-      font-weight:950; cursor:pointer;}
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.92);
+      font-weight:950;
+      cursor:pointer;
+    }
     .mini.primary{border:0; background:linear-gradient(135deg,var(--gold1),var(--gold2)); color:#140b00;}
     .mini[disabled]{opacity:.45; cursor:not-allowed}
 
@@ -231,33 +258,85 @@
     .player.show{display:block; animation:fade .45s ease both}
     .player iframe{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000}
 
-    .top{position:absolute; left:0; right:0; top:0; padding:14px;
+    .top{
+      position:absolute; left:0; right:0;
+      top: calc(0px + env(safe-area-inset-top));
+      padding:14px;
       display:flex; gap:10px; justify-content:space-between; align-items:center;
-      background:linear-gradient(to bottom, rgba(0,0,0,.70), transparent); z-index:45;}
-    .chip{font-size:12px; padding:10px 12px; border-radius:999px;
+      background:linear-gradient(to bottom, rgba(0,0,0,.70), transparent);
+      z-index:45;
+    }
+    .chip{
+      font-size:12px;
+      padding:10px 12px;
+      border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.35); color:rgba(255,255,255,.86); backdrop-filter: blur(8px);}
+      background:rgba(0,0,0,.35);
+      color:rgba(255,255,255,.86);
+      backdrop-filter: blur(8px);
+    }
     button.chip{cursor:pointer}
 
-    .banner{position:absolute; left:14px; right:14px; bottom:14px; display:none;
-      border-radius:20px; border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.45); backdrop-filter: blur(10px); padding:14px;
-      z-index:60; text-align:left; box-shadow:0 18px 55px rgba(0,0,0,.45);}
+    .banner{
+      position:absolute;
+      left:14px; right:14px;
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      display:none;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+      padding:14px;
+      z-index:60;
+      text-align:left;
+      box-shadow:0 18px 55px rgba(0,0,0,.45);
+    }
     .banner.show{display:block; animation:fade .35s ease both}
     .banner h2{margin:0 0 6px; font-size:16px}
     .banner p{margin:0 0 10px; color:rgba(255,255,255,.74); font-size:13px; line-height:1.35}
 
-    .end{position:absolute; inset:0; display:none; place-items:center; padding:24px;
+    .end{
+      position:absolute; inset:0;
+      display:none; place-items:center; padding:24px;
       background:radial-gradient(900px 600px at 50% 20%, rgba(255,138,31,.18), transparent 60%), rgba(0,0,0,.75);
-      backdrop-filter: blur(6px); z-index:70;}
+      backdrop-filter: blur(6px);
+      z-index:70;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .end.show{display:grid; animation:fade .5s ease both}
-    .end .box{width:min(520px,100%); border-radius:26px;
-      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow); padding:26px 22px; text-align:center;}
+    .end .box{
+      width:min(520px,100%);
+      border-radius:26px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      padding:26px 22px;
+      text-align:center;
+    }
     .end h3{margin:0 0 10px; font-size:24px}
     .end p{margin:0; color:rgba(255,255,255,.78); font-size:16px; line-height:1.5}
     .sig{margin-top:14px; font-weight:950; letter-spacing:.2px}
     .end .row{margin-top:16px}
+
+    /* ✅ MOBILE FIXES (knoppen altijd zichtbaar) */
+    .card,
+    .gatebox{
+      max-height: calc(100dvh - 48px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(22px + env(safe-area-inset-bottom));
+    }
+
+    @media (max-width: 420px){
+      .row{ flex-direction: column; }
+      .mini{ width: 100%; }
+    }
+
+    @media (max-height: 700px){
+      h1{ font-size: 26px; }
+      .count{ font-size: 36px; }
+    }
   </style>
 </head>
 
@@ -363,19 +442,15 @@
     const VIDEO1_ID = "c53lhh";
     const VIDEO2_ID = "uwkejn";
 
-    // Timings (jouw info + marge)
+    // Timings
     const PART1_LENGTH = 7.7;
     const PART2_LENGTH = 15.3;
 
     // Gate duration
-    const GATE_HOURS = 24; // pas dit aan als je wilt
+    const GATE_HOURS = 24;
 
     // Correct answers (geen "liefde")
-    const ACCEPTED_ANSWERS = [
-      "viral", "viraal"
-      // evt extra opties:
-      // "tiktok", "trend", "fyp"
-    ];
+    const ACCEPTED_ANSWERS = ["viral", "viraal"];
 
     // Extra hint cycle
     const EXTRA_HINTS = [
@@ -411,10 +486,7 @@
     function clearCountdown(){ if (countdownTimer) clearInterval(countdownTimer); countdownTimer = null; }
 
     function norm(s){
-      return (s || "")
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, "");
+      return (s || "").trim().toLowerCase().replace(/\s+/g, "");
     }
 
     function setVideo(id){
@@ -467,9 +539,11 @@
       player.classList.remove('show');
       gate.classList.add('show');
 
-      // nice: laat ook exacte tijd zien
       const d = new Date(openAtMs);
-      const fmt = new Intl.DateTimeFormat('nl-NL', { weekday:"long", year:"numeric", month:"long", day:"numeric", hour:"2-digit", minute:"2-digit" });
+      const fmt = new Intl.DateTimeFormat('nl-NL', {
+        weekday:"long", year:"numeric", month:"long", day:"numeric",
+        hour:"2-digit", minute:"2-digit"
+      });
       openAtText.textContent = `Opent op: ${fmt.format(d)}`;
 
       openNowBtn.disabled = true;
@@ -492,7 +566,6 @@
     }
 
     function setUnlockState(){
-      // bewaart eenmalig de “openAt”
       const keyUnlocked = "kiki_unlocked_v1";
       const keyOpenAt = "kiki_openat_v1";
 
@@ -533,14 +606,12 @@
 
     // Gate buttons
     openNowBtn.addEventListener('click', () => {
-      // alleen als enabled
       if (openNowBtn.disabled) return;
       playPart1();
-      requestFs(); // best effort
+      requestFs();
     });
 
     resetGateBtn.addEventListener('click', () => {
-      // reset alles (handig voor jou om te testen)
       localStorage.removeItem("kiki_unlocked_v1");
       localStorage.removeItem("kiki_openat_v1");
       clearCountdown();
@@ -568,9 +639,7 @@
     (function boot(){
       const unlocked = localStorage.getItem("kiki_unlocked_v1") === "1";
       const openAt = Number(localStorage.getItem("kiki_openat_v1") || "0");
-
       if (unlocked && openAt){
-        // Als de tijd voorbij is, laat meteen “Open cadeau” toe
         start.style.display = "none";
         showGate(openAt);
       }
