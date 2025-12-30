@@ -4,168 +4,577 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Voor Kiki ✨</title>
+  <style>
+    :root{
+      --bg:#06060a; --fg:#fff;
+      --muted:rgba(255,255,255,.78);
+      --muted2:rgba(255,255,255,.55);
+      --gold1:#ffe8c6; --gold2:#ff8a1f;
+      --card:rgba(255,255,255,.07);
+      --stroke:rgba(255,255,255,.12);
+      --shadow: 0 22px 70px rgba(0,0,0,.60);
+      --danger:#ff5a5a;
+      --ok:#65ffb0;
+    }
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    *{box-sizing:border-box}
 
-  <meta name="theme-color" content="#0a0710" />
-  <link rel="icon" href="assets/favicon.svg" />
-  <link rel="stylesheet" href="assets/style.css" />
+    .bg{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden;
+      background:
+        radial-gradient(900px 520px at 20% 10%, rgba(255,138,31,.22), transparent 62%),
+        radial-gradient(760px 520px at 80% 30%, rgba(255,226,178,.16), transparent 62%),
+        radial-gradient(980px 780px at 50% 120%, rgba(255,138,31,.10), transparent 62%),
+        linear-gradient(#050507, #090913);
+      filter:saturate(1.05);
+    }
+    .stars{position:absolute; inset:-20%; opacity:.55; animation: drift 16s ease-in-out infinite alternate;
+      background-image:
+        radial-gradient(2px 2px at 10% 20%, rgba(255,255,255,.38) 40%, transparent 42%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,.26) 40%, transparent 42%),
+        radial-gradient(1.5px 1.5px at 70% 30%, rgba(255,255,255,.30) 40%, transparent 42%),
+        radial-gradient(1px 1px at 85% 70%, rgba(255,255,255,.20) 40%, transparent 42%),
+        radial-gradient(2px 2px at 55% 80%, rgba(255,255,255,.18) 40%, transparent 42%);
+    }
+    .glitter{position:absolute; inset:0; opacity:.22; animation: twinkle 3.8s ease-in-out infinite;
+      background:
+        radial-gradient(2px 2px at 15% 35%, rgba(255,226,178,.95) 30%, transparent 35%),
+        radial-gradient(1px 1px at 65% 25%, rgba(255,138,31,.95) 30%, transparent 35%),
+        radial-gradient(2px 2px at 78% 62%, rgba(255,226,178,.80) 30%, transparent 35%),
+        radial-gradient(1px 1px at 40% 78%, rgba(255,138,31,.80) 30%, transparent 35%);
+    }
+    .snow{position:absolute; inset:0; opacity:.32; transform:translateY(-10%); animation: snow 7s linear infinite;
+      background-image:
+        radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,.55) 40%, transparent 42%),
+        radial-gradient(1px 1px at 25% 30%, rgba(255,255,255,.35) 40%, transparent 42%),
+        radial-gradient(2px 2px at 40% 20%, rgba(255,255,255,.45) 40%, transparent 42%),
+        radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,.30) 40%, transparent 42%),
+        radial-gradient(2px 2px at 70% 15%, rgba(255,255,255,.35) 40%, transparent 42%),
+        radial-gradient(1px 1px at 85% 28%, rgba(255,255,255,.25) 40%, transparent 42%);
+    }
+    @keyframes drift{from{transform:translate3d(-1.5%,-1.0%,0) scale(1)}to{transform:translate3d(1.5%,1.0%,0) scale(1.02)}}
+    @keyframes twinkle{0%,100%{opacity:.16}50%{opacity:.28}}
+    @keyframes snow{to{transform:translateY(10%)}}
+
+    .wrap{position:fixed; inset:0; display:grid; place-items:center; padding:24px}
+    .card{
+      width:min(640px,100%);
+      border-radius:28px;
+      background:var(--card);
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+      padding:26px 22px;
+      text-align:center;
+      backdrop-filter: blur(12px);
+      transition:transform .15s ease;
+    }
+    .shake{animation:shake .38s ease;}
+    @keyframes shake{
+      0%{transform:translateX(0)}
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-6px)}
+      80%{transform:translateX(6px)}
+      100%{transform:translateX(0)}
+    }
+
+    .envelope{
+      width:160px;height:112px;margin:2px auto 14px;position:relative;
+      border-radius:22px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 18px 55px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .flap{
+      position:absolute; left:-12%; right:-12%; top:-58%;
+      height:125%;
+      background:linear-gradient(135deg, rgba(255,226,178,.18), rgba(255,138,31,.10));
+      transform-origin:50% 92%;
+      transform:rotateX(0deg);
+      border:1px solid rgba(255,255,255,.08);
+      border-bottom:none;
+      border-radius:24px;
+    }
+    .seal{
+      position:absolute; left:50%; top:58%;
+      transform:translate(-50%,-50%);
+      width:44px;height:44px;border-radius:18px;
+      background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.25), transparent 35%),
+                 linear-gradient(135deg,var(--gold1),var(--gold2));
+      box-shadow:0 0 28px rgba(255,138,31,.40);
+      display:grid; place-items:center;
+      font-weight:900; letter-spacing:.5px;
+      color:rgba(30,15,0,.85);
+    }
+    .seal span{transform:translateY(-1px)}
+    .opening .flap{ animation: openflap .70s ease forwards; }
+    @keyframes openflap{ from{transform:rotateX(0deg)} to{transform:rotateX(72deg)} }
+
+    .badge{
+      display:inline-flex; gap:10px; align-items:center;
+      padding:10px 14px; border-radius:999px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      margin-bottom:14px;
+    }
+    .spark{width:18px;height:18px; display:grid; place-items:center;
+      filter: drop-shadow(0 0 10px rgba(255,138,31,.35));
+    }
+
+    h1{margin:6px 0 10px; font-size:30px}
+    p{margin:0 0 12px; color:var(--muted); line-height:1.45; font-size:16px}
+    .bigline{margin:8px 0 16px; color:var(--muted2); font-size:15px; line-height:1.55}
+
+    .hints{
+      text-align:left;
+      margin:14px 0 12px;
+      padding:14px 14px;
+      border-radius:18px;
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .hintsTitle{font-weight:950; margin:0 0 8px; color:rgba(255,255,255,.90)}
+    .hintItem{margin:0 0 6px; color:rgba(255,255,255,.72); font-size:14px; line-height:1.4}
+    .hintItem:last-child{margin:0}
+    .pill{
+      display:inline-block; padding:2px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.85);
+      font-weight:850;
+      margin-left:6px;
+    }
+
+    .inputRow{display:flex; gap:10px; margin-top:12px}
+    input{
+      flex:1;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      padding:14px 14px;
+      font-size:16px;
+      outline:none;
+    }
+    input::placeholder{color:rgba(255,255,255,.45)}
+    .btn{
+      width:100%;
+      padding:16px 18px;
+      border:0;
+      border-radius:18px;
+      font-size:18px;
+      font-weight:950;
+      cursor:pointer;
+      color:#140b00;
+      background:linear-gradient(135deg,var(--gold1),var(--gold2));
+      box-shadow:0 14px 42px rgba(255,138,31,.30);
+      margin-top:12px;
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+    }
+    .status{
+      margin-top:10px;
+      font-size:13px;
+      color:rgba(255,255,255,.70);
+      min-height:18px;
+    }
+    .status.bad{color:rgba(255,90,90,.92)}
+    .status.ok{color:rgba(101,255,176,.92)}
+    .hintSmall{margin-top:10px; font-size:13px; color:rgba(255,255,255,.62)}
+
+    /* Gate / Countdown */
+    .gate{position:fixed; inset:0; display:none; place-items:center;
+      background:rgba(0,0,0,.78); backdrop-filter: blur(6px); z-index:60;}
+    .gate.show{display:grid; animation:fade .35s ease both}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+    .gatebox{
+      width:min(560px,92%);
+      border-radius:26px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      padding:26px 22px;
+      text-align:center;
+    }
+    .gateTitle{font-weight:950; margin:0 0 8px}
+    .gateSub{margin:0 0 14px; color:rgba(255,255,255,.72); line-height:1.45}
+    .count{
+      font-variant-numeric: tabular-nums;
+      font-size:44px;
+      font-weight:950;
+      letter-spacing:1px;
+      margin:8px 0 10px;
+      color:rgba(255,255,255,.96);
+      text-shadow:0 0 28px rgba(255,138,31,.18);
+    }
+    .openAt{
+      margin:0 0 16px;
+      font-size:13px;
+      color:rgba(255,255,255,.62);
+    }
+    .row{display:flex; gap:10px}
+    .mini{flex:1; padding:12px 12px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08); color:rgba(255,255,255,.92);
+      font-weight:950; cursor:pointer;}
+    .mini.primary{border:0; background:linear-gradient(135deg,var(--gold1),var(--gold2)); color:#140b00;}
+    .mini[disabled]{opacity:.45; cursor:not-allowed}
+
+    /* Player */
+    .player{position:fixed; inset:0; display:none; background:#000; z-index:40}
+    .player.show{display:block; animation:fade .45s ease both}
+    .player iframe{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000}
+
+    .top{position:absolute; left:0; right:0; top:0; padding:14px;
+      display:flex; gap:10px; justify-content:space-between; align-items:center;
+      background:linear-gradient(to bottom, rgba(0,0,0,.70), transparent); z-index:45;}
+    .chip{font-size:12px; padding:10px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.35); color:rgba(255,255,255,.86); backdrop-filter: blur(8px);}
+    button.chip{cursor:pointer}
+
+    .banner{position:absolute; left:14px; right:14px; bottom:14px; display:none;
+      border-radius:20px; border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45); backdrop-filter: blur(10px); padding:14px;
+      z-index:60; text-align:left; box-shadow:0 18px 55px rgba(0,0,0,.45);}
+    .banner.show{display:block; animation:fade .35s ease both}
+    .banner h2{margin:0 0 6px; font-size:16px}
+    .banner p{margin:0 0 10px; color:rgba(255,255,255,.74); font-size:13px; line-height:1.35}
+
+    .end{position:absolute; inset:0; display:none; place-items:center; padding:24px;
+      background:radial-gradient(900px 600px at 50% 20%, rgba(255,138,31,.18), transparent 60%), rgba(0,0,0,.75);
+      backdrop-filter: blur(6px); z-index:70;}
+    .end.show{display:grid; animation:fade .5s ease both}
+    .end .box{width:min(520px,100%); border-radius:26px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow); padding:26px 22px; text-align:center;}
+    .end h3{margin:0 0 10px; font-size:24px}
+    .end p{margin:0; color:rgba(255,255,255,.78); font-size:16px; line-height:1.5}
+    .sig{margin-top:14px; font-weight:950; letter-spacing:.2px}
+    .end .row{margin-top:16px}
+  </style>
 </head>
 
 <body>
-  <!-- Luxe kerst-achtergrond -->
-  <div class="bg" aria-hidden="true">
+  <div class="bg">
     <div class="stars"></div>
     <div class="glitter"></div>
-    <div class="snow snow1"></div>
-    <div class="snow snow2"></div>
-    <div class="snow snow3"></div>
-    <div class="snow snow4"></div>
-    <div class="lights"></div>
-    <div class="vignette"></div>
+    <div class="snow"></div>
   </div>
 
-  <!-- FX layers -->
-  <div class="flash" id="flash" aria-hidden="true"></div>
-  <div class="particles" id="particles" aria-hidden="true"></div>
-
-  <!-- START -->
-  <main class="wrap" id="start">
-    <section class="card">
-      <!-- Gift icon (iOS-ish) -->
-      <div class="giftapp" id="giftIcon" aria-hidden="true">
-        <svg class="giftapp-svg" viewBox="0 0 180 140" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ffe2b2"/>
-              <stop offset="1" stop-color="#ff8a1f"/>
-            </linearGradient>
-            <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="2.5" />
-            </filter>
-          </defs>
-
-          <!-- back stack -->
-          <g opacity="0.35" filter="url(#soft)">
-            <rect x="36" y="18" width="108" height="108" rx="28" fill="rgba(255,255,255,.10)" transform="rotate(-8 90 72)"/>
-            <rect x="34" y="20" width="112" height="112" rx="30" fill="rgba(255,255,255,.08)" transform="rotate(6 90 72)"/>
-          </g>
-
-          <!-- face -->
-          <rect x="34" y="16" width="112" height="112" rx="30" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.14)"/>
-
-          <!-- gift mark -->
-          <g transform="translate(50,34)">
-            <rect x="0" y="34" width="80" height="54" rx="18" fill="rgba(0,0,0,.08)" stroke="rgba(255,255,255,.10)"/>
-            <rect x="0" y="34" width="80" height="12" rx="10" fill="url(#gold)"/>
-            <rect x="34" y="34" width="12" height="54" rx="8" fill="url(#gold)"/>
-
-            <!-- bow -->
-            <path d="M18 30c6-9 14-9 18 0c-6 8-12 12-18 12s-12-4-18-12z" fill="url(#gold)"/>
-            <path d="M62 30c-6-9-14-9-18 0c6 8 12 12 18 12s12-4 18-12z" fill="url(#gold)"/>
-          </g>
-        </svg>
+  <!-- START / GAME -->
+  <div class="wrap" id="start">
+    <div class="card" id="card">
+      <div class="envelope" id="env">
+        <div class="flap"></div>
+        <div class="seal"><span>K</span></div>
       </div>
 
       <div class="badge">
-        <span class="spark" aria-hidden="true"></span>
-        <span>Voor de allerliefste Kiki</span>
+        <div class="spark">✦</div>
+        <div>Voor Kiki</div>
       </div>
 
-      <h1>Ik heb iets voor je <span aria-hidden="true">✨</span></h1>
-      <p>Een luxe kleine verrassing… omdat jij jij bent.</p>
-      <div class="bigline">Dankjewel dat je er bent. <span aria-hidden="true">💛</span><br>Tip: zet je geluid aan <span aria-hidden="true">🔊</span></div>
+      <h1>Mini uitdaging ✨</h1>
+      <p>Raad het woord en unlock je verrassing.</p>
+      <div class="bigline">Tip: je hebt ’m op TikTok voorbij zien komen. 😉</div>
 
-      <button class="btn" id="openGift" type="button">Open de verrassing <span aria-hidden="true">🎁</span></button>
+      <div class="hints">
+        <div class="hintsTitle">Hints</div>
+        <div class="hintItem">1) Het is zo’n woord dat je zegt als iets ineens <span class="pill">overal</span> opduikt</div>
+        <div class="hintItem">2) Het past bij <span class="pill">TikTok</span> en “iedereen heeft het erover”</div>
+        <div class="hintItem">3) Het begint met een <span class="pill">V</span></div>
+      </div>
 
-      <div class="hint">iPhone tip: voor écht fullscreen tik je in de video op ⛶.</div>
-      <div class="tiny">Na deel 1 verschijnt een knop om verder te gaan. <span aria-hidden="true">✨</span></div>
-    </section>
-  </main>
+      <div class="inputRow">
+        <input id="answer" type="text" inputmode="text" autocomplete="off" autocapitalize="none"
+               placeholder="Vul het woord in…" />
+      </div>
 
-  <!-- LOADER -->
-  <div class="loader" id="loader" aria-hidden="true">
-    <div class="loadbox">
-      <div class="loadtitle">✨ Even magie laden…</div>
-      <div class="loadsub">Dit duurt heel kort.</div>
-      <div class="bar"><div></div></div>
+      <button class="btn" id="unlock">Unlock 🎁</button>
+      <button class="btn secondary" id="hintBtn">Extra hint</button>
+
+      <div class="status" id="status"></div>
+      <div class="hintSmall">iPhone tip: voor écht fullscreen tik je in de video op ⛶.</div>
+    </div>
+  </div>
+
+  <!-- GATE / COUNTDOWN -->
+  <div class="gate" id="gate">
+    <div class="gatebox">
+      <div class="gateTitle">✨ Unlock gelukt</div>
+      <div class="gateSub">Maar… het cadeau opent pas als de timer op nul staat.</div>
+
+      <div class="count" id="countdown">24:00:00</div>
+      <div class="openAt" id="openAtText"></div>
+
+      <div class="row">
+        <button class="mini" id="resetGate" type="button">Opnieuw</button>
+        <button class="mini primary" id="openNow" type="button" disabled>Open cadeau 🎁</button>
+      </div>
     </div>
   </div>
 
   <!-- PLAYER -->
-  <section class="player" id="player" aria-hidden="true">
-    <header class="top">
+  <div class="player" id="player">
+    <div class="top">
       <div class="chip">Voor Kiki ✨</div>
-      <div class="topright">
-        <button class="chip btn-chip" id="fsBtn" type="button">Fullscreen</button>
+      <div style="display:flex; gap:10px">
+        <button class="chip" id="fsBtn" type="button">Fullscreen</button>
         <div class="chip" id="which">Deel 1</div>
-      </div>
-    </header>
-
-    <iframe id="frame" src="" allow="autoplay; fullscreen" allowfullscreen title="Surprise video"></iframe>
-
-    <!-- Overlay + centered modal after part 1 -->
-    <div class="overlay" id="overlay" aria-hidden="true"></div>
-
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
-      <div class="modalbox">
-        <h2 id="modalTitle">Oké… nu open je ’m écht <span aria-hidden="true">🎁</span></h2>
-        <p>Klaar voor het volgende stukje? Tik op <b>Open deel 2</b>. <span aria-hidden="true">💛</span></p>
-        <div class="row">
-          <button class="mini" id="replay1" type="button">Nog eens <span aria-hidden="true">✨</span></button>
-          <button class="mini primary" id="play2" type="button">Open deel 2 <span aria-hidden="true">💛</span></button>
-        </div>
       </div>
     </div>
 
-    <!-- End modal -->
-    <div class="end" id="end" aria-hidden="true">
+    <iframe id="frame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+    <div class="banner" id="banner">
+      <h2>Maak nu het cadeau open 🎁</h2>
+      <p>Oké… klaar? Druk dan op deel 2.</p>
+      <div class="row">
+        <button class="mini" id="replay1">Nog eens ✨</button>
+        <button class="mini primary" id="play2">Open deel 2 💛</button>
+      </div>
+    </div>
+
+    <div class="end" id="end">
       <div class="box">
-        <h3>Dankjewel, Kiki <span aria-hidden="true">💛</span></h3>
+        <h3>Dankjewel, Kiki 💛</h3>
         <p>
           Dankjewel dat je er bent.<br>
           En dat jij… gewoon jij bent.
         </p>
         <div class="sig">— Kevin</div>
         <div class="row">
-          <button class="mini" id="again" type="button">Nog een keer</button>
-          <button class="mini primary" id="closeEnd" type="button">Afsluiten <span aria-hidden="true">💥💛</span></button>
+          <button class="mini" id="again">Nog een keer</button>
+          <button class="mini primary" id="closeEnd">Oké ✨</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Finale screen (after explosion) -->
-    <div class="finale" id="finale" aria-hidden="true">
-      <div class="finale-box">
-        <div class="finale-top">🎄✨</div>
-        <h3>Fijne kerstdagen, Kiki</h3>
-        <p>
-          Ik hoop dat dit je even liet glimlachen.<br>
-          Geniet van je cadeau. <span aria-hidden="true">💛</span>
-        </p>
-        <div class="sig">— Kevin</div>
-        <div class="row">
-          <button class="mini" id="finalRestart" type="button">Nog een keer 🎁</button>
-          <button class="mini primary" id="finalClose" type="button">Sluiten ✨</button>
-        </div>
-      </div>
-    </div>
+  <script>
+    // Videos
+    const VIDEO1_ID = "c53lhh";
+    const VIDEO2_ID = "uwkejn";
 
-    <!-- "Closed" screen -->
-    <div class="closed" id="closed" aria-hidden="true">
-      <div class="closed-box">
-        <div class="closed-top">💛💛💛</div>
-        <h3>Klaar…</h3>
-        <p>
-          Je kunt dit tabblad nu sluiten.<br>
-          (Op mobiel laten browsers websites meestal niet automatisch “echt” afsluiten.)
-        </p>
-        <div class="row">
-          <button class="mini" id="closedBack" type="button">Terug</button>
-          <button class="mini primary" id="closedTryClose" type="button">Probeer sluiten ✨</button>
-        </div>
-      </div>
-    </div>
-  </section>
+    // Timings (jouw info + marge)
+    const PART1_LENGTH = 7.7;
+    const PART2_LENGTH = 15.3;
 
-  <script src="assets/app.js"></script>
+    // Gate duration
+    const GATE_HOURS = 24; // pas dit aan als je wilt
+
+    // Correct answers (geen "liefde")
+    const ACCEPTED_ANSWERS = [
+      "viral", "viraal"
+      // evt extra opties:
+      // "tiktok", "trend", "fyp"
+    ];
+
+    // Extra hint cycle
+    const EXTRA_HINTS = [
+      "Het is één woord. Niet ingewikkeld.",
+      "Denk: ‘dit ging ineens he-le-maal rond’.",
+      "Begint met V… 😉"
+    ];
+    let hintIndex = 0;
+
+    const start = document.getElementById('start');
+    const card = document.getElementById('card');
+    const env = document.getElementById('env');
+
+    const gate = document.getElementById('gate');
+    const countdownEl = document.getElementById('countdown');
+    const openAtText = document.getElementById('openAtText');
+    const openNowBtn = document.getElementById('openNow');
+    const resetGateBtn = document.getElementById('resetGate');
+
+    const player = document.getElementById('player');
+    const frame = document.getElementById('frame');
+    const banner = document.getElementById('banner');
+    const end = document.getElementById('end');
+    const which = document.getElementById('which');
+
+    const answer = document.getElementById('answer');
+    const status = document.getElementById('status');
+
+    let timers = [];
+    let countdownTimer = null;
+
+    function clearTimers(){ timers.forEach(t => clearTimeout(t)); timers = []; }
+    function clearCountdown(){ if (countdownTimer) clearInterval(countdownTimer); countdownTimer = null; }
+
+    function norm(s){
+      return (s || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "");
+    }
+
+    function setVideo(id){
+      frame.src = `https://streamable.com/e/${id}?autoplay=1&hd=1`;
+    }
+
+    function requestFs(){
+      const el = document.getElementById('player');
+      const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      if (rfs) { try { rfs.call(el); } catch(e) {} }
+    }
+
+    function showPlayer(){
+      start.style.display = 'none';
+      gate.classList.remove('show');
+      player.classList.add('show');
+    }
+
+    function playPart1(){
+      clearTimers();
+      banner.classList.remove('show');
+      end.classList.remove('show');
+      which.textContent = "Deel 1";
+      setVideo(VIDEO1_ID);
+      showPlayer();
+      timers.push(setTimeout(() => banner.classList.add('show'), PART1_LENGTH * 1000));
+    }
+
+    function playPart2(){
+      clearTimers();
+      banner.classList.remove('show');
+      end.classList.remove('show');
+      which.textContent = "Deel 2";
+      setVideo(VIDEO2_ID);
+      timers.push(setTimeout(() => end.classList.add('show'), PART2_LENGTH * 1000));
+    }
+
+    function pad2(n){ return String(n).padStart(2, "0"); }
+
+    function formatRemaining(ms){
+      const total = Math.max(0, Math.floor(ms / 1000));
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+    }
+
+    function showGate(openAtMs){
+      start.style.display = 'none';
+      player.classList.remove('show');
+      gate.classList.add('show');
+
+      // nice: laat ook exacte tijd zien
+      const d = new Date(openAtMs);
+      const fmt = new Intl.DateTimeFormat('nl-NL', { weekday:"long", year:"numeric", month:"long", day:"numeric", hour:"2-digit", minute:"2-digit" });
+      openAtText.textContent = `Opent op: ${fmt.format(d)}`;
+
+      openNowBtn.disabled = true;
+      countdownEl.textContent = "24:00:00";
+
+      clearCountdown();
+      countdownTimer = setInterval(() => {
+        const now = Date.now();
+        const remaining = openAtMs - now;
+
+        countdownEl.textContent = formatRemaining(remaining);
+
+        if (remaining <= 0){
+          clearCountdown();
+          countdownEl.textContent = "00:00:00";
+          openNowBtn.disabled = false;
+          openAtText.textContent = "Het cadeau is nu open. 😉";
+        }
+      }, 250);
+    }
+
+    function setUnlockState(){
+      // bewaart eenmalig de “openAt”
+      const keyUnlocked = "kiki_unlocked_v1";
+      const keyOpenAt = "kiki_openat_v1";
+
+      localStorage.setItem(keyUnlocked, "1");
+
+      let openAt = Number(localStorage.getItem(keyOpenAt) || "0");
+      if (!openAt){
+        openAt = Date.now() + (GATE_HOURS * 60 * 60 * 1000);
+        localStorage.setItem(keyOpenAt, String(openAt));
+      }
+      return openAt;
+    }
+
+    async function unlock(){
+      const a = norm(answer.value);
+
+      if (!a){
+        status.className = "status bad";
+        status.textContent = "Vul eerst een woord in 🙂";
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+        return;
+      }
+
+      if (!ACCEPTED_ANSWERS.includes(a)){
+        status.className = "status bad";
+        status.textContent = "Hmm… bijna. Probeer nog eens.";
+        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+        return;
+      }
+
+      status.className = "status ok";
+      status.textContent = "Yes! Unlock gelukt ✨";
+      env.classList.add('opening');
+
+      const openAt = setUnlockState();
+      showGate(openAt);
+    }
+
+    // Gate buttons
+    openNowBtn.addEventListener('click', () => {
+      // alleen als enabled
+      if (openNowBtn.disabled) return;
+      playPart1();
+      requestFs(); // best effort
+    });
+
+    resetGateBtn.addEventListener('click', () => {
+      // reset alles (handig voor jou om te testen)
+      localStorage.removeItem("kiki_unlocked_v1");
+      localStorage.removeItem("kiki_openat_v1");
+      clearCountdown();
+      location.reload();
+    });
+
+    // Inputs & hints
+    document.getElementById('unlock').addEventListener('click', unlock);
+    answer.addEventListener('keydown', (e) => { if (e.key === "Enter") unlock(); });
+
+    document.getElementById('hintBtn').addEventListener('click', () => {
+      status.className = "status";
+      status.textContent = EXTRA_HINTS[hintIndex % EXTRA_HINTS.length];
+      hintIndex++;
+    });
+
+    // Player controls
+    document.getElementById('replay1').addEventListener('click', playPart1);
+    document.getElementById('play2').addEventListener('click', playPart2);
+    document.getElementById('again').addEventListener('click', () => location.reload());
+    document.getElementById('closeEnd').addEventListener('click', () => end.classList.remove('show'));
+    document.getElementById('fsBtn').addEventListener('click', requestFs);
+
+    // Auto-resume gate if already unlocked earlier
+    (function boot(){
+      const unlocked = localStorage.getItem("kiki_unlocked_v1") === "1";
+      const openAt = Number(localStorage.getItem("kiki_openat_v1") || "0");
+
+      if (unlocked && openAt){
+        // Als de tijd voorbij is, laat meteen “Open cadeau” toe
+        start.style.display = "none";
+        showGate(openAt);
+      }
+    })();
+  </script>
 </body>
 </html>
