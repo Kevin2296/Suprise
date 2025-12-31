@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Voor Kiki ✨</title>
+
   <style>
     :root{
       --bg:#06060a; --fg:#fff;
@@ -16,15 +17,18 @@
       --danger:#ff5a5a;
       --ok:#65ffb0;
     }
+
     html,body{
       height:100%;
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      overflow:hidden; /* NO SCROLL */
     }
     *{box-sizing:border-box}
 
+    /* Background */
     .bg{
       position:fixed; inset:0; pointer-events:none; overflow:hidden;
       background:
@@ -49,56 +53,52 @@
         radial-gradient(2px 2px at 78% 62%, rgba(255,226,178,.80) 30%, transparent 35%),
         radial-gradient(1px 1px at 40% 78%, rgba(255,138,31,.80) 30%, transparent 35%);
     }
-    .snow{position:absolute; inset:0; opacity:.32; transform:translateY(-10%); animation: snow 7s linear infinite;
-      background-image:
-        radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,.55) 40%, transparent 42%),
-        radial-gradient(1px 1px at 25% 30%, rgba(255,255,255,.35) 40%, transparent 42%),
-        radial-gradient(2px 2px at 40% 20%, rgba(255,255,255,.45) 40%, transparent 42%),
-        radial-gradient(1px 1px at 55% 35%, rgba(255,255,255,.30) 40%, transparent 42%),
-        radial-gradient(2px 2px at 70% 15%, rgba(255,255,255,.35) 40%, transparent 42%),
-        radial-gradient(1px 1px at 85% 28%, rgba(255,255,255,.25) 40%, transparent 42%);
-    }
     @keyframes drift{from{transform:translate3d(-1.5%,-1.0%,0) scale(1)}to{transform:translate3d(1.5%,1.0%,0) scale(1.02)}}
     @keyframes twinkle{0%,100%{opacity:.16}50%{opacity:.28}}
-    @keyframes snow{to{transform:translateY(10%)}}
 
-    /* ✅ belangrijk: overflow zodat je op mobiel kunt scrollen als het niet past */
+    /* Layout (NO scroll; everything fits) */
     .wrap{
       position:fixed; inset:0;
       display:grid; place-items:center;
-      padding:24px;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
+      padding:16px;
+      overflow:hidden;
     }
 
     .card{
       width:min(640px,100%);
+      height: calc(100dvh - 32px);
+      max-height: 820px;
       border-radius:28px;
       background:var(--card);
       border:1px solid var(--stroke);
       box-shadow:var(--shadow);
-      padding:26px 22px;
+      padding:20px 18px;
       text-align:center;
       backdrop-filter: blur(12px);
-      transition:transform .15s ease;
-    }
-    .shake{animation:shake .38s ease;}
-    @keyframes shake{
-      0%{transform:translateX(0)}
-      20%{transform:translateX(-8px)}
-      40%{transform:translateX(8px)}
-      60%{transform:translateX(-6px)}
-      80%{transform:translateX(6px)}
-      100%{transform:translateX(0)}
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:12px;
+      padding-bottom: calc(18px + env(safe-area-inset-bottom));
     }
 
+    /* Fancy ornaments */
+    .orn{position:absolute; pointer-events:none; opacity:.65; filter: drop-shadow(0 0 14px rgba(255,138,31,.22)); animation: floaty 6.5s ease-in-out infinite;}
+    .orn.h{color:rgba(255,170,170,.85)}
+    .orn.t{color:rgba(160,255,200,.75)}
+    .orn.s{color:rgba(255,226,178,.85)}
+    @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg); opacity:.55}50%{transform:translateY(-10px) rotate(4deg); opacity:.85}}
+
     .envelope{
-      width:160px;height:112px;margin:2px auto 14px;position:relative;
-      border-radius:22px;
+      width:150px;height:106px;margin:0 auto;
+      position:relative;border-radius:22px;
       background:rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 18px 55px rgba(0,0,0,.35);
       overflow:hidden;
+      flex:0 0 auto;
     }
     .flap{
       position:absolute; left:-12%; right:-12%; top:-58%;
@@ -121,36 +121,24 @@
       font-weight:900; letter-spacing:.5px;
       color:rgba(30,15,0,.85);
     }
-    .seal span{transform:translateY(-1px)}
     .opening .flap{ animation: openflap .70s ease forwards; }
     @keyframes openflap{ from{transform:rotateX(0deg)} to{transform:rotateX(72deg)} }
 
     .badge{
-      display:inline-flex; gap:10px; align-items:center;
-      padding:10px 14px; border-radius:999px;
+      display:inline-flex; gap:10px; align-items:center; justify-content:center;
+      padding:9px 12px; border-radius:999px;
       background:rgba(255,255,255,.07);
       border:1px solid rgba(255,255,255,.12);
-      margin-bottom:14px;
+      margin:0 auto;
+      width:fit-content;
+      flex:0 0 auto;
     }
-    .spark{width:18px;height:18px; display:grid; place-items:center;
-      filter: drop-shadow(0 0 10px rgba(255,138,31,.35));
-    }
+    .spark{width:18px;height:18px; display:grid; place-items:center; filter: drop-shadow(0 0 10px rgba(255,138,31,.35));}
 
-    h1{margin:6px 0 10px; font-size:30px}
-    p{margin:0 0 12px; color:var(--muted); line-height:1.45; font-size:16px}
-    .bigline{margin:8px 0 16px; color:var(--muted2); font-size:15px; line-height:1.55}
+    h1{margin:0; font-size:28px; flex:0 0 auto;}
+    p{margin:0; color:var(--muted); line-height:1.35; font-size:15px; flex:0 0 auto;}
+    .bigline{margin:0; color:var(--muted2); font-size:14px; line-height:1.35; flex:0 0 auto;}
 
-    .hints{
-      text-align:left;
-      margin:14px 0 12px;
-      padding:14px 14px;
-      border-radius:18px;
-      background:rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .hintsTitle{font-weight:950; margin:0 0 8px; color:rgba(255,255,255,.90)}
-    .hintItem{margin:0 0 6px; color:rgba(255,255,255,.72); font-size:14px; line-height:1.4}
-    .hintItem:last-child{margin:0}
     .pill{
       display:inline-block; padding:2px 10px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14);
@@ -160,30 +148,53 @@
       margin-left:6px;
     }
 
-    .inputRow{display:flex; gap:10px; margin-top:12px}
+    /* Collapsible hints */
+    details.hints{
+      text-align:left;
+      margin:0;
+      padding:12px 12px;
+      border-radius:18px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+      flex:0 0 auto;
+    }
+    details.hints summary{
+      cursor:pointer;
+      font-weight:950;
+      color:rgba(255,255,255,.90);
+      list-style:none;
+      outline:none;
+    }
+    details.hints summary::-webkit-details-marker{display:none;}
+    .hintItem{margin:8px 0 0; color:rgba(255,255,255,.72); font-size:13px; line-height:1.35}
+
+    .inputRow{display:flex; gap:10px; margin:0; flex:0 0 auto;}
     input{
       flex:1;
       border-radius:16px;
       border:1px solid rgba(255,255,255,.14);
       background:rgba(255,255,255,.06);
       color:#fff;
-      padding:14px 14px;
+      padding:13px 14px;
       font-size:16px;
       outline:none;
+      min-width:0;
     }
     input::placeholder{color:rgba(255,255,255,.45)}
+
     .btn{
       width:100%;
-      padding:16px 18px;
+      padding:14px 16px;
       border:0;
       border-radius:18px;
-      font-size:18px;
+      font-size:17px;
       font-weight:950;
       cursor:pointer;
       color:#140b00;
       background:linear-gradient(135deg,var(--gold1),var(--gold2));
       box-shadow:0 14px 42px rgba(255,138,31,.30);
-      margin-top:12px;
+      margin:0;
+      flex:0 0 auto;
     }
     .btn.secondary{
       background:rgba(255,255,255,.08);
@@ -192,88 +203,107 @@
       box-shadow:none;
     }
     .status{
-      margin-top:10px;
+      margin:0;
       font-size:13px;
       color:rgba(255,255,255,.70);
       min-height:18px;
+      flex:0 0 auto;
     }
     .status.bad{color:rgba(255,90,90,.92)}
     .status.ok{color:rgba(101,255,176,.92)}
-    .hintSmall{margin-top:10px; font-size:13px; color:rgba(255,255,255,.62)}
 
-    /* Gate / Countdown */
+    /* TIMER GATE */
     .gate{
-      position:fixed; inset:0;
-      display:none; place-items:center;
-      background:rgba(0,0,0,.78);
-      backdrop-filter: blur(6px);
-      z-index:60;
-      padding:24px;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
+      position:fixed; inset:0; display:none; place-items:center; padding:16px;
+      background:rgba(0,0,0,.78); backdrop-filter: blur(6px); z-index:60;
+      overflow:hidden;
     }
     .gate.show{display:grid; animation:fade .35s ease both}
     @keyframes fade{from{opacity:0}to{opacity:1}}
+
     .gatebox{
-      width:min(560px,92%);
-      border-radius:26px;
+      width:min(600px,92%);
+      height: calc(100dvh - 32px);
+      max-height: 820px;
+      border-radius:28px;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.12);
       box-shadow:var(--shadow);
-      padding:26px 22px;
+      padding:20px 18px;
       text-align:center;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:10px;
+      padding-bottom: calc(18px + env(safe-area-inset-bottom));
     }
-    .gateTitle{font-weight:950; margin:0 0 8px}
-    .gateSub{margin:0 0 14px; color:rgba(255,255,255,.72); line-height:1.45}
+    .gatebox::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:30px;
+      padding:2px;
+      background:linear-gradient(135deg, rgba(255,232,198,.55), rgba(255,138,31,.35), rgba(255,232,198,.45));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    /* Snowflakes */
+    .gateSnow{position:absolute; inset:0; pointer-events:none; opacity:.55; z-index:1;}
+    .flake{
+      position:absolute; top:-30px;
+      color:rgba(255,255,255,.90);
+      font-size:16px;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.10));
+      animation: fall linear infinite;
+      will-change: transform;
+    }
+    @keyframes fall{to{ transform: translateY(calc(100vh + 120px)) rotate(360deg); }}
+
+    .gateTitle{font-weight:950; margin:0; position:relative; z-index:2}
+    .gateSub{margin:0; color:rgba(255,255,255,.74); line-height:1.35; position:relative; z-index:2}
     .count{
       font-variant-numeric: tabular-nums;
-      font-size:44px;
-      font-weight:950;
-      letter-spacing:1px;
-      margin:8px 0 10px;
-      color:rgba(255,255,255,.96);
-      text-shadow:0 0 28px rgba(255,138,31,.18);
+      font-size:44px; font-weight:950; letter-spacing:1px;
+      margin:0; position:relative; z-index:2;
+      text-shadow:0 0 32px rgba(255,138,31,.20);
     }
-    .openAt{
-      margin:0 0 16px;
-      font-size:13px;
-      color:rgba(255,255,255,.62);
-    }
-    .row{display:flex; gap:10px}
+    .openAt{margin:0; font-size:13px; color:rgba(255,255,255,.64); position:relative; z-index:2}
+    .microhint{margin:0; font-size:13px; color:rgba(255,255,255,.76); line-height:1.35; position:relative; z-index:2}
+    .row{display:flex; gap:10px; position:relative; z-index:2}
     .mini{
-      flex:1;
-      padding:12px 12px;
-      border-radius:16px;
+      flex:1; padding:12px 12px; border-radius:16px;
       border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.08);
-      color:rgba(255,255,255,.92);
-      font-weight:950;
-      cursor:pointer;
+      background:rgba(255,255,255,.08); color:rgba(255,255,255,.92);
+      font-weight:950; cursor:pointer;
     }
     .mini.primary{border:0; background:linear-gradient(135deg,var(--gold1),var(--gold2)); color:#140b00;}
     .mini[disabled]{opacity:.45; cursor:not-allowed}
 
-    /* Player */
-    .player{position:fixed; inset:0; display:none; background:#000; z-index:40}
+    /* PLAYER */
+    .player{position:fixed; inset:0; display:none; background:#000; z-index:40; overflow:hidden;}
     .player.show{display:block; animation:fade .45s ease both}
     .player iframe{position:absolute; inset:0; width:100%; height:100%; border:0; background:#000}
 
     .top{
       position:absolute; left:0; right:0;
       top: calc(0px + env(safe-area-inset-top));
-      padding:14px;
+      padding:12px;
       display:flex; gap:10px; justify-content:space-between; align-items:center;
-      background:linear-gradient(to bottom, rgba(0,0,0,.70), transparent);
+      background:linear-gradient(to bottom, rgba(0,0,0,.72), transparent);
       z-index:45;
+      flex-wrap:wrap;
     }
     .chip{
-      font-size:12px;
-      padding:10px 12px;
-      border-radius:999px;
+      font-size:12px; padding:9px 11px; border-radius:999px;
       border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.35);
-      color:rgba(255,255,255,.86);
+      background:rgba(0,0,0,.35); color:rgba(255,255,255,.86);
       backdrop-filter: blur(8px);
+      white-space:nowrap;
     }
     button.chip{cursor:pointer}
 
@@ -282,60 +312,81 @@
       left:14px; right:14px;
       bottom: calc(14px + env(safe-area-inset-bottom));
       display:none;
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.45);
-      backdrop-filter: blur(10px);
-      padding:14px;
-      z-index:60;
-      text-align:left;
-      box-shadow:0 18px 55px rgba(0,0,0,.45);
+      border-radius:20px; border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.45); backdrop-filter: blur(10px);
+      padding:14px; z-index:60; text-align:left; box-shadow:0 18px 55px rgba(0,0,0,.45);
     }
     .banner.show{display:block; animation:fade .35s ease both}
     .banner h2{margin:0 0 6px; font-size:16px}
     .banner p{margin:0 0 10px; color:rgba(255,255,255,.74); font-size:13px; line-height:1.35}
 
-    .end{
-      position:absolute; inset:0;
-      display:none; place-items:center; padding:24px;
-      background:radial-gradient(900px 600px at 50% 20%, rgba(255,138,31,.18), transparent 60%), rgba(0,0,0,.75);
-      backdrop-filter: blur(6px);
-      z-index:70;
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
+    /* POST pages (after Part 2) */
+    .post{
+      position:fixed; inset:0;
+      display:none; place-items:center;
+      padding:16px;
+      background:rgba(0,0,0,.80);
+      backdrop-filter: blur(8px);
+      z-index:80; /* ABOVE everything */
+      overflow:hidden;
     }
-    .end.show{display:grid; animation:fade .5s ease both}
-    .end .box{
-      width:min(520px,100%);
-      border-radius:26px;
+    .post.show{display:grid; animation:fade .35s ease both}
+    .postbox{
+      width:min(600px,92%);
+      height: calc(100dvh - 32px);
+      max-height: 820px;
+      border-radius:28px;
       background:rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.12);
       box-shadow:var(--shadow);
-      padding:26px 22px;
+      padding:22px 18px;
       text-align:center;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:12px;
+      padding-bottom: calc(18px + env(safe-area-inset-bottom));
     }
-    .end h3{margin:0 0 10px; font-size:24px}
-    .end p{margin:0; color:rgba(255,255,255,.78); font-size:16px; line-height:1.5}
-    .sig{margin-top:14px; font-weight:950; letter-spacing:.2px}
-    .end .row{margin-top:16px}
-
-    /* ✅ MOBILE FIXES (knoppen altijd zichtbaar) */
-    .card,
-    .gatebox{
-      max-height: calc(100dvh - 48px);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: calc(22px + env(safe-area-inset-bottom));
+    .postbox::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius:30px;
+      padding:2px;
+      background:linear-gradient(135deg, rgba(255,232,198,.60), rgba(255,138,31,.35), rgba(255,232,198,.45));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity:.55;
+      pointer-events:none;
+    }
+    .postTitle{font-weight:950; font-size:26px; margin:0; position:relative; z-index:2}
+    .postText{margin:0; color:rgba(255,255,255,.78); font-size:15px; line-height:1.45; position:relative; z-index:2}
+    .sig{margin-top:6px; font-weight:950; letter-spacing:.2px; position:relative; z-index:2}
+    .confetti{
+      position:absolute; inset:0; pointer-events:none; opacity:.45; z-index:1;
+      background:
+        radial-gradient(2px 2px at 12% 18%, rgba(255,226,178,.95) 45%, transparent 50%),
+        radial-gradient(2px 2px at 72% 30%, rgba(255,138,31,.90) 45%, transparent 50%),
+        radial-gradient(2px 2px at 46% 72%, rgba(255,170,170,.90) 45%, transparent 50%),
+        radial-gradient(2px 2px at 82% 66%, rgba(160,255,200,.85) 45%, transparent 50%),
+        radial-gradient(2px 2px at 26% 60%, rgba(255,226,178,.85) 45%, transparent 50%);
+      animation: twinkle 3.2s ease-in-out infinite;
     }
 
+    @media (max-height: 740px){
+      h1{font-size:26px}
+      .envelope{width:135px;height:96px}
+      .count{font-size:40px}
+      input{padding:12px 14px}
+      .btn{padding:13px 16px; font-size:16px}
+      .chip{padding:8px 10px}
+      .postTitle{font-size:24px}
+    }
     @media (max-width: 420px){
-      .row{ flex-direction: column; }
-      .mini{ width: 100%; }
-    }
-
-    @media (max-height: 700px){
-      h1{ font-size: 26px; }
-      .count{ font-size: 36px; }
+      .row{flex-direction:column}
+      .mini{width:100%}
     }
   </style>
 </head>
@@ -344,12 +395,16 @@
   <div class="bg">
     <div class="stars"></div>
     <div class="glitter"></div>
-    <div class="snow"></div>
   </div>
 
   <!-- START / GAME -->
   <div class="wrap" id="start">
     <div class="card" id="card">
+      <div class="orn s" style="left:10%; top:10%; animation-duration:7.2s;">✦</div>
+      <div class="orn h" style="left:84%; top:12%; animation-duration:6.3s;">♥</div>
+      <div class="orn t" style="left:88%; top:58%; animation-duration:8.0s;">🎄</div>
+      <div class="orn s" style="left:12%; top:70%; animation-duration:6.8s;">✧</div>
+
       <div class="envelope" id="env">
         <div class="flap"></div>
         <div class="seal"><span>K</span></div>
@@ -358,18 +413,19 @@
       <div class="badge">
         <div class="spark">✦</div>
         <div>Voor Kiki</div>
+        <div class="spark">🎄</div>
       </div>
 
       <h1>Mini uitdaging ✨</h1>
-      <p>Raad het woord en unlock je verrassing.</p>
-      <div class="bigline">Tip: je hebt ’m op TikTok voorbij zien komen. 😉</div>
+      <p>Je hebt ’m op TikTok voorbij zien komen. 😉</p>
+      <div class="bigline">Raad het woord en unlock je verrassing.</div>
 
-      <div class="hints">
-        <div class="hintsTitle">Hints</div>
-        <div class="hintItem">1) Het is zo’n woord dat je zegt als iets ineens <span class="pill">overal</span> opduikt</div>
-        <div class="hintItem">2) Het past bij <span class="pill">TikTok</span> en “iedereen heeft het erover”</div>
+      <details class="hints">
+        <summary>Hints (tap om te openen)</summary>
+        <div class="hintItem">1) Het is één woord dat je zegt als iets ineens <span class="pill">overal</span> is</div>
+        <div class="hintItem">2) Past bij <span class="pill">TikTok</span> en “iedereen doet het”</div>
         <div class="hintItem">3) Het begint met een <span class="pill">V</span></div>
-      </div>
+      </details>
 
       <div class="inputRow">
         <input id="answer" type="text" inputmode="text" autocomplete="off" autocapitalize="none"
@@ -380,18 +436,24 @@
       <button class="btn secondary" id="hintBtn">Extra hint</button>
 
       <div class="status" id="status"></div>
-      <div class="hintSmall">iPhone tip: voor écht fullscreen tik je in de video op ⛶.</div>
     </div>
   </div>
 
-  <!-- GATE / COUNTDOWN -->
+  <!-- TIMER PAGE -->
   <div class="gate" id="gate">
     <div class="gatebox">
+      <div class="gateSnow" id="gateSnow" aria-hidden="true"></div>
+
+      <div class="orn s" style="left:8%; top:10%; animation-duration:7.2s;">✦</div>
+      <div class="orn h" style="left:86%; top:12%; animation-duration:6.3s;">♥</div>
+      <div class="orn t" style="left:88%; top:52%; animation-duration:8.0s;">🎄</div>
+
       <div class="gateTitle">✨ Unlock gelukt</div>
       <div class="gateSub">Maar… het cadeau opent pas als de timer op nul staat.</div>
 
-      <div class="count" id="countdown">24:00:00</div>
+      <div class="count" id="countdown">00:00:00</div>
       <div class="openAt" id="openAtText"></div>
+      <div class="microhint" id="microHint"></div>
 
       <div class="row">
         <button class="mini" id="resetGate" type="button">Opnieuw</button>
@@ -404,7 +466,10 @@
   <div class="player" id="player">
     <div class="top">
       <div class="chip">Voor Kiki ✨</div>
-      <div style="display:flex; gap:10px">
+
+      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
+        <button class="chip" id="startBtn" type="button">Start ▶</button>
+        <button class="chip" id="soundBtn" type="button">Geluid 🔊</button>
         <button class="chip" id="fsBtn" type="button">Fullscreen</button>
         <div class="chip" id="which">Deel 1</div>
       </div>
@@ -413,46 +478,76 @@
     <iframe id="frame" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
     <div class="banner" id="banner">
-      <h2>Maak nu het cadeau open 🎁</h2>
-      <p>Oké… klaar? Druk dan op deel 2.</p>
+      <h2>Oké… klaar? 🎁</h2>
+      <p>Druk op deel 2 (dáár zit de verrassing 😉)</p>
       <div class="row">
-        <button class="mini" id="replay1">Nog eens ✨</button>
-        <button class="mini primary" id="play2">Open deel 2 💛</button>
+        <button class="mini" id="replay1" type="button">Nog eens ✨</button>
+        <button class="mini primary" id="play2" type="button">Open deel 2 💛</button>
       </div>
     </div>
+  </div>
 
-    <div class="end" id="end">
-      <div class="box">
-        <h3>Dankjewel, Kiki 💛</h3>
-        <p>
-          Dankjewel dat je er bent.<br>
-          En dat jij… gewoon jij bent.
-        </p>
-        <div class="sig">— Kevin</div>
-        <div class="row">
-          <button class="mini" id="again">Nog een keer</button>
-          <button class="mini primary" id="closeEnd">Oké ✨</button>
-        </div>
+  <!-- POST PAGE 1 (after Part 2) -->
+  <div class="post" id="post1">
+    <div class="postbox">
+      <div class="confetti"></div>
+      <div class="orn h" style="left:10%; top:14%; animation-duration:6.2s;">♥</div>
+      <div class="orn s" style="left:86%; top:16%; animation-duration:7.0s;">✦</div>
+      <div class="orn t" style="left:88%; top:60%; animation-duration:8.0s;">🎄</div>
+
+      <div class="postTitle">Je hebt ’m geopend 🎁</div>
+      <p class="postText">
+        Oké… eerlijk?<br>
+        Ik hoop dat je even moest lachen. 💛
+      </p>
+      <div class="row">
+        <button class="mini" id="postReplay2" type="button">Nog eens ✨</button>
+        <button class="mini primary" id="postNext" type="button">Verder ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST PAGE 2 (final) -->
+  <div class="post" id="post2">
+    <div class="postbox">
+      <div class="confetti"></div>
+      <div class="orn s" style="left:10%; top:14%; animation-duration:6.6s;">✧</div>
+      <div class="orn h" style="left:86%; top:16%; animation-duration:7.4s;">♥</div>
+      <div class="orn t" style="left:84%; top:66%; animation-duration:8.2s;">🎄</div>
+
+      <div class="postTitle">Dankjewel, Kiki 💛</div>
+      <p class="postText">
+        Dankjewel dat je er bent.<br>
+        En dat jij… gewoon jij bent.
+      </p>
+      <div class="sig">— Kevin</div>
+      <div class="row">
+        <button class="mini" id="postAgain" type="button">Nog een keer</button>
+        <button class="mini primary" id="postClose" type="button">Oké ✨</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Videos
-    const VIDEO1_ID = "c53lhh";
-    const VIDEO2_ID = "uwkejn";
+    // STREAMABLE IDs
+    const VIDEO1_ID = "kf86g0";
+    const VIDEO2_ID = "hdnue1";
 
-    // Timings
-    const PART1_LENGTH = 7.7;
-    const PART2_LENGTH = 15.3;
+    // Durations (marge) - pas aan als nodig
+    const PART1_LENGTH = 8.0;
+    const PART2_LENGTH = 15.5;
 
-    // Gate duration
-    const GATE_HOURS = 24;
+    // OPEN TIME (NL tijd) -> 31-12-2025 18:00
+    const FIXED_OPEN_AT_ISO = "2025-12-31T18:00:00+01:00";
 
-    // Correct answers (geen "liefde")
+    // TEST:
+    // ?test=1&openin=30  -> opent in 30 sec (per device)
+    // ?test=1&reset=1    -> reset testtimer
+    const TEST_DEFAULT_SECONDS = 45;
+
+    // Antwoord (niet te heavy)
     const ACCEPTED_ANSWERS = ["viral", "viraal"];
 
-    // Extra hint cycle
     const EXTRA_HINTS = [
       "Het is één woord. Niet ingewikkeld.",
       "Denk: ‘dit ging ineens he-le-maal rond’.",
@@ -460,8 +555,12 @@
     ];
     let hintIndex = 0;
 
+    const TIMER_HINTS = [
+      "Kleine hint: je hebt ’t op TikTok voorbij zien komen… en het heeft met onze gezamenlijke hobby te maken. 😉",
+      "Nog een mini-hint: er zijn 2 delen… deel 2 is de echte 🎁"
+    ];
+
     const start = document.getElementById('start');
-    const card = document.getElementById('card');
     const env = document.getElementById('env');
 
     const gate = document.getElementById('gate');
@@ -469,28 +568,62 @@
     const openAtText = document.getElementById('openAtText');
     const openNowBtn = document.getElementById('openNow');
     const resetGateBtn = document.getElementById('resetGate');
+    const microHintEl = document.getElementById('microHint');
+    const gateSnow = document.getElementById("gateSnow");
 
     const player = document.getElementById('player');
     const frame = document.getElementById('frame');
     const banner = document.getElementById('banner');
-    const end = document.getElementById('end');
     const which = document.getElementById('which');
+
+    const post1 = document.getElementById('post1');
+    const post2 = document.getElementById('post2');
+
+    const startBtn = document.getElementById('startBtn');
+    const soundBtn = document.getElementById('soundBtn');
 
     const answer = document.getElementById('answer');
     const status = document.getElementById('status');
 
     let timers = [];
     let countdownTimer = null;
+    let currentPart = 1;
 
     function clearTimers(){ timers.forEach(t => clearTimeout(t)); timers = []; }
     function clearCountdown(){ if (countdownTimer) clearInterval(countdownTimer); countdownTimer = null; }
 
-    function norm(s){
-      return (s || "").trim().toLowerCase().replace(/\s+/g, "");
+    function hideAllOverlays(){
+      gate.classList.remove('show');
+      player.classList.remove('show');
+      post1.classList.remove('show');
+      post2.classList.remove('show');
+      banner.classList.remove('show');
     }
 
-    function setVideo(id){
-      frame.src = `https://streamable.com/e/${id}?autoplay=1&hd=1`;
+    function qs(name){
+      const u = new URL(location.href);
+      return u.searchParams.get(name);
+    }
+    function isTestMode(){ return qs("test") === "1"; }
+
+    function getOpenAtMs(){
+      if (isTestMode() && qs("reset") === "1"){
+        localStorage.removeItem("kiki_test_openat_v1");
+      }
+      if (isTestMode()){
+        let t = Number(localStorage.getItem("kiki_test_openat_v1") || "0");
+        if (!t){
+          const sec = Number(qs("openin") || TEST_DEFAULT_SECONDS);
+          t = Date.now() + (Math.max(5, sec) * 1000);
+          localStorage.setItem("kiki_test_openat_v1", String(t));
+        }
+        return t;
+      }
+      return new Date(FIXED_OPEN_AT_ISO).getTime();
+    }
+
+    function norm(s){
+      return (s || "").trim().toLowerCase().replace(/\s+/g, "");
     }
 
     function requestFs(){
@@ -499,33 +632,7 @@
       if (rfs) { try { rfs.call(el); } catch(e) {} }
     }
 
-    function showPlayer(){
-      start.style.display = 'none';
-      gate.classList.remove('show');
-      player.classList.add('show');
-    }
-
-    function playPart1(){
-      clearTimers();
-      banner.classList.remove('show');
-      end.classList.remove('show');
-      which.textContent = "Deel 1";
-      setVideo(VIDEO1_ID);
-      showPlayer();
-      timers.push(setTimeout(() => banner.classList.add('show'), PART1_LENGTH * 1000));
-    }
-
-    function playPart2(){
-      clearTimers();
-      banner.classList.remove('show');
-      end.classList.remove('show');
-      which.textContent = "Deel 2";
-      setVideo(VIDEO2_ID);
-      timers.push(setTimeout(() => end.classList.add('show'), PART2_LENGTH * 1000));
-    }
-
     function pad2(n){ return String(n).padStart(2, "0"); }
-
     function formatRemaining(ms){
       const total = Math.max(0, Math.floor(ms / 1000));
       const h = Math.floor(total / 3600);
@@ -533,66 +640,128 @@
       const s = total % 60;
       return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
     }
-
-    function showGate(openAtMs){
-      start.style.display = 'none';
-      player.classList.remove('show');
-      gate.classList.add('show');
-
+    function formatOpenAt(openAtMs){
       const d = new Date(openAtMs);
       const fmt = new Intl.DateTimeFormat('nl-NL', {
         weekday:"long", year:"numeric", month:"long", day:"numeric",
         hour:"2-digit", minute:"2-digit"
       });
-      openAtText.textContent = `Opent op: ${fmt.format(d)}`;
+      return fmt.format(d);
+    }
 
-      openNowBtn.disabled = true;
-      countdownEl.textContent = "24:00:00";
+    // Streamable embed builder
+    function streamableUrl(id, { muted=true } = {}){
+      const base = `https://streamable.com/e/${id}`;
+      const params = new URLSearchParams();
+      params.set("autoplay","1");
+      params.set("hd","1");
+      params.set("nocontrols","1");
+      if (muted) params.set("muted","1");
+      params.set("_", String(Date.now())); // cache-buster
+      return `${base}?${params.toString()}`;
+    }
 
-      clearCountdown();
-      countdownTimer = setInterval(() => {
-        const now = Date.now();
-        const remaining = openAtMs - now;
+    function showPlayer(){
+      hideAllOverlays();
+      start.style.display = 'none';
+      player.classList.add('show');
+    }
 
+    function setVideo(part, { muted=true } = {}){
+      currentPart = part;
+      which.textContent = part === 1 ? "Deel 1" : "Deel 2";
+      const id = part === 1 ? VIDEO1_ID : VIDEO2_ID;
+      frame.src = streamableUrl(id, { muted });
+    }
+
+    function showPost1(){
+      // stop player (iframe layer issues weg) en toon vervolg
+      player.classList.remove('show');
+      post1.classList.add('show');
+    }
+    function showPost2(){
+      post1.classList.remove('show');
+      post2.classList.add('show');
+    }
+
+    function playPart1(){
+      clearTimers();
+      showPlayer();
+      setVideo(1, { muted:true });
+      timers.push(setTimeout(() => banner.classList.add('show'), PART1_LENGTH * 1000));
+    }
+
+    function playPart2(){
+      clearTimers();
+      banner.classList.remove('show');
+      showPlayer();
+      setVideo(2, { muted:true });
+
+      // Na deel 2 -> vervolg pagina 1 (werkt betrouwbaarder dan overlay op iframe)
+      timers.push(setTimeout(showPost1, PART2_LENGTH * 1000));
+    }
+
+    function renderGateSnow(){
+      if (!gateSnow) return;
+      gateSnow.innerHTML = "";
+      const count = 26;
+      for (let i=0;i<count;i++){
+        const s = document.createElement("div");
+        s.className = "flake";
+        s.textContent = "❄";
+        const left = Math.random() * 100;
+        const size = 12 + Math.random() * 16;
+        const dur = 6 + Math.random() * 8;
+        const delay = -Math.random() * dur;
+        s.style.left = left + "%";
+        s.style.fontSize = size + "px";
+        s.style.animationDuration = dur + "s";
+        s.style.animationDelay = delay + "s";
+        gateSnow.appendChild(s);
+      }
+    }
+
+    function showGate(openAtMs){
+      hideAllOverlays();
+      start.style.display = 'none';
+      gate.classList.add('show');
+
+      renderGateSnow();
+      openAtText.textContent = `Opent op: ${formatOpenAt(openAtMs)}${isTestMode() ? " (TEST)" : ""}`;
+
+      if (microHintEl){
+        microHintEl.textContent = "";
+        setTimeout(() => { microHintEl.textContent = TIMER_HINTS[0]; }, 4500);
+        setTimeout(() => { microHintEl.textContent = TIMER_HINTS[1]; }, 12000);
+      }
+
+      function tick(){
+        const remaining = openAtMs - Date.now();
         countdownEl.textContent = formatRemaining(remaining);
-
         if (remaining <= 0){
-          clearCountdown();
-          countdownEl.textContent = "00:00:00";
           openNowBtn.disabled = false;
           openAtText.textContent = "Het cadeau is nu open. 😉";
+          if (microHintEl) microHintEl.textContent = "Oké… nu mag je ‘m openmaken. ✨";
+        } else {
+          openNowBtn.disabled = true;
         }
-      }, 250);
-    }
-
-    function setUnlockState(){
-      const keyUnlocked = "kiki_unlocked_v1";
-      const keyOpenAt = "kiki_openat_v1";
-
-      localStorage.setItem(keyUnlocked, "1");
-
-      let openAt = Number(localStorage.getItem(keyOpenAt) || "0");
-      if (!openAt){
-        openAt = Date.now() + (GATE_HOURS * 60 * 60 * 1000);
-        localStorage.setItem(keyOpenAt, String(openAt));
       }
-      return openAt;
+
+      clearCountdown();
+      tick();
+      countdownTimer = setInterval(tick, 250);
     }
 
-    async function unlock(){
+    function unlock(){
       const a = norm(answer.value);
-
       if (!a){
         status.className = "status bad";
         status.textContent = "Vul eerst een woord in 🙂";
-        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
         return;
       }
-
       if (!ACCEPTED_ANSWERS.includes(a)){
         status.className = "status bad";
         status.textContent = "Hmm… bijna. Probeer nog eens.";
-        card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
         return;
       }
 
@@ -600,25 +769,12 @@
       status.textContent = "Yes! Unlock gelukt ✨";
       env.classList.add('opening');
 
-      const openAt = setUnlockState();
-      showGate(openAt);
+      localStorage.setItem("kiki_unlocked_v2", "1");
+      localStorage.setItem("kiki_unlocked_v1", "1");
+
+      showGate(getOpenAtMs());
     }
 
-    // Gate buttons
-    openNowBtn.addEventListener('click', () => {
-      if (openNowBtn.disabled) return;
-      playPart1();
-      requestFs();
-    });
-
-    resetGateBtn.addEventListener('click', () => {
-      localStorage.removeItem("kiki_unlocked_v1");
-      localStorage.removeItem("kiki_openat_v1");
-      clearCountdown();
-      location.reload();
-    });
-
-    // Inputs & hints
     document.getElementById('unlock').addEventListener('click', unlock);
     answer.addEventListener('keydown', (e) => { if (e.key === "Enter") unlock(); });
 
@@ -628,20 +784,49 @@
       hintIndex++;
     });
 
-    // Player controls
+    openNowBtn.addEventListener('click', () => {
+      if (openNowBtn.disabled) return;
+      playPart1();
+    });
+
+    resetGateBtn.addEventListener('click', () => {
+      localStorage.removeItem("kiki_unlocked_v2");
+      localStorage.removeItem("kiki_unlocked_v1");
+      clearCountdown();
+      location.reload();
+    });
+
     document.getElementById('replay1').addEventListener('click', playPart1);
     document.getElementById('play2').addEventListener('click', playPart2);
-    document.getElementById('again').addEventListener('click', () => location.reload());
-    document.getElementById('closeEnd').addEventListener('click', () => end.classList.remove('show'));
     document.getElementById('fsBtn').addEventListener('click', requestFs);
 
-    // Auto-resume gate if already unlocked earlier
+    // Android autoplay fix:
+    startBtn.addEventListener('click', () => {
+      const part = currentPart || 1;
+      setVideo(part, { muted:true });
+    });
+    soundBtn.addEventListener('click', () => {
+      const part = currentPart || 1;
+      setVideo(part, { muted:false });
+    });
+
+    // Post pages buttons
+    document.getElementById('postReplay2').addEventListener('click', () => {
+      post1.classList.remove('show');
+      playPart2();
+    });
+    document.getElementById('postNext').addEventListener('click', showPost2);
+    document.getElementById('postAgain').addEventListener('click', () => location.reload());
+    document.getElementById('postClose').addEventListener('click', () => {
+      // sluit alles en ga terug naar start (of laat zwart)
+      post2.classList.remove('show');
+      location.reload();
+    });
+
+    // Boot: als ze al unlocked is -> direct timer
     (function boot(){
-      const unlocked = localStorage.getItem("kiki_unlocked_v1") === "1";
-      const openAt = Number(localStorage.getItem("kiki_openat_v1") || "0");
-      if (unlocked && openAt){
-        start.style.display = "none";
-        showGate(openAt);
+      if (localStorage.getItem("kiki_unlocked_v2") === "1" || localStorage.getItem("kiki_unlocked_v1") === "1"){
+        showGate(getOpenAtMs());
       }
     })();
   </script>
